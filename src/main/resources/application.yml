@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: devgram
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/devgram-db?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23lisNSELqXNpBswWU
+            client-secret: 015016b5640be6915877f2557c00d00c5b89057b
+            scope: read:user
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: GitHub
+          google:
+            client-id: 1078791760561-4m5o468ps13p6tgkt11g4laeug81h9b2.apps.googleusercontent.com
+            client-secret: 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
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+
+myapp:
+  url: http://localhost:3000
