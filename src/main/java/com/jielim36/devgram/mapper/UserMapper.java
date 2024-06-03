@@ -10,4 +10,8 @@ public interface UserMapper {
 
     User selectUserById(Long id);
 
+    User selectUserByGithubId(Integer github_id);
+
+    User selectUserByGoogleId(String google_id);
+
 }

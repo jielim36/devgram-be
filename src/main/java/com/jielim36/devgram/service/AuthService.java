@@ -1,5 +1,7 @@
 package com.jielim36.devgram.service;
 
+import com.jielim36.devgram.common.OAuthProvider;
+import com.jielim36.devgram.common.OAuthUserConvert;
 import com.jielim36.devgram.entity.User;
 import com.jielim36.devgram.mapper.AuthMapper;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -7,21 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-
-    public enum OAuthProvider {
-        GOOGLE("google"),
-        GITHUB("github");
-
-        private final String providerName;
-
-        OAuthProvider(String providerName) {
-            this.providerName = providerName;
-        }
-
-        public String getProviderName() {
-            return providerName;
-        }
-    }
 
     private final AuthMapper authMapper;
 
@@ -31,9 +18,9 @@ public class AuthService {
 
     public boolean checkUserExists(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
 
-        if (OAuthProvider.GITHUB.providerName.equals(providerId)) {
+        if (OAuthProvider.GITHUB.getProviderName().equals(providerId)) {
             return checkUserExists_github(userPrincipal.getAttribute("id"));
-        } else if (OAuthProvider.GOOGLE.providerName.equals(providerId)) {
+        } else if (OAuthProvider.GOOGLE.getProviderName().equals(providerId)) {
             return checkUserExists_google(userPrincipal.getAttribute("sub"));
         }
 
@@ -49,30 +36,27 @@ public class AuthService {
     }
 
     public void register(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
-        if (OAuthProvider.GITHUB.providerName.equals(providerId)) {
+        if (OAuthProvider.GITHUB.getProviderName().equals(providerId)) {
             register_github(userPrincipal);
-        } else if (OAuthProvider.GOOGLE.providerName.equals(providerId)) {
+        } else if (OAuthProvider.GOOGLE.getProviderName().equals(providerId)) {
             register_google(userPrincipal);
         }
     }
 
     public void register_github(OAuth2AuthenticatedPrincipal principal) {
-        User user = new User();
-        user.setGithub_id(principal.getAttribute("id"));
-        user.setUsername(principal.getAttribute("login"));
-        user.setAvatar_url(principal.getAttribute("avatar_url"));
+//        User user = new User();
+//        user.setGithub_id(principal.getAttribute("id"));
+//        user.setUsername(principal.getAttribute("login"));
+//        user.setAvatar_url(principal.getAttribute("avatar_url"));
         // GitHub account would not return email
 //        user.setEmail(principal.getAttribute("email"));
+        User user = OAuthUserConvert.convertGithubUser(principal);
 
         authMapper.insertGithubUser(user);
     }
 
     public void register_google(OAuth2AuthenticatedPrincipal principal) {
-        User user = new User();
-        user.setGoogle_id(principal.getAttribute("sub"));
-        user.setUsername(principal.getAttribute("name"));
-        user.setEmail(principal.getAttribute("email"));
-        user.setAvatar_url(principal.getAttribute("picture"));
+        User user = OAuthUserConvert.convertGoogleUser(principal);
 
         authMapper.insertGoogleUser(user);
     }

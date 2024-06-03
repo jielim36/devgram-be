@@ -10,4 +10,12 @@
     <select id="selectUserById" resultType="com.jielim36.devgram.entity.User">
         SELECT * FROM user WHERE id = #{id}
     </select>
+
+    <select id="selectUserByGithubId" resultType="com.jielim36.devgram.entity.User">
+        SELECT * FROM user WHERE github_id = #{github_id}
+    </select>
+
+    <select id="selectUserByGoogleId" resultType="com.jielim36.devgram.entity.User">
+        SELECT * FROM user WHERE google_id = #{google_id}
+    </select>
 </mapper>
