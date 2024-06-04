@@ -1,11 +1,12 @@
 package com.jielim36.devgram.entity;
 
+import com.jielim36.devgram.common.DTO.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
 @Repository
-public class User {
+public class UserEntity {
 
     private Long id;
     private String username;
@@ -113,4 +114,10 @@ public class User {
                 ", updated_at=" + updated_at +
                 '}';
     }
+
+    public UserDTO convertToDTO() {
+        this.setPassword(null);
+        return new UserDTO(this);
+    }
+
 }

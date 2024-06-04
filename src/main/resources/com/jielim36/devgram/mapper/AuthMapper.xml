@@ -3,20 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jielim36.devgram.mapper.AuthMapper">
-    <select id="selectUserByGithubId" resultType="com.jielim36.devgram.entity.User">
+    <select id="selectUserByGithubId" resultType="com.jielim36.devgram.entity.UserEntity">
         SELECT * FROM user WHERE github_id = #{githubId}
     </select>
 
-    <select id="selectUserByGoogleId" resultType="com.jielim36.devgram.entity.User">
+    <select id="selectUserByGoogleId" resultType="com.jielim36.devgram.entity.UserEntity">
         SELECT * FROM user WHERE google_id = #{googleId}
     </select>
 
-    <insert id="insertGithubUser" parameterType="com.jielim36.devgram.entity.User">
+    <insert id="insertGithubUser" parameterType="com.jielim36.devgram.entity.UserEntity">
         INSERT INTO `user` (github_id, username, email, avatar_url, created_at, updated_at)
         VALUES (#{github_id}, #{username}, #{email}, #{avatar_url}, #{created_at}, #{updated_at})
     </insert>
 
-    <insert id="insertGoogleUser" parameterType="com.jielim36.devgram.entity.User">
+    <insert id="insertGoogleUser" parameterType="com.jielim36.devgram.entity.UserEntity">
         INSERT INTO `user` (google_id, username, email, avatar_url, created_at, updated_at)
         VALUES (#{google_id}, #{username}, #{email}, #{avatar_url}, #{created_at}, #{updated_at})
     </insert>

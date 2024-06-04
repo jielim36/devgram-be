@@ -2,7 +2,7 @@ package com.jielim36.devgram.service;
 
 import com.jielim36.devgram.common.OAuthProvider;
 import com.jielim36.devgram.common.OAuthUserConvert;
-import com.jielim36.devgram.entity.User;
+import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.UserMapper;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
@@ -16,13 +16,13 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public User selectUserById(Long id) {
+    public UserEntity selectUserById(Long id) {
         return userMapper.selectUserById(id);
     }
 
-    public User selectUserByThirdParty(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
+    public UserEntity selectUserByThirdParty(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
 
-        User user = OAuthUserConvert.convertUser(providerId, userPrincipal);
+        UserEntity user = OAuthUserConvert.convertUser(providerId, userPrincipal);
 
         if (providerId.equals(OAuthProvider.GITHUB.getProviderName())) {
             return selectUserByGithubId(user.getGithub_id());
@@ -32,14 +32,14 @@ public class UserService {
         return null;
     }
 
-    public User selectUserByGithubId(Integer github_id) {
-        User user = userMapper.selectUserByGithubId(github_id);
+    public UserEntity selectUserByGithubId(Integer github_id) {
+        UserEntity user = userMapper.selectUserByGithubId(github_id);
         user.setPassword(null);
         return user;
     }
 
-    public User selectUserByGoogleId(String google_id) {
-        User user = userMapper.selectUserByGoogleId(google_id);
+    public UserEntity selectUserByGoogleId(String google_id) {
+        UserEntity user = userMapper.selectUserByGoogleId(google_id);
         user.setPassword(null);
         return user;
     }

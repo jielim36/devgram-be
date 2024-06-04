@@ -2,7 +2,7 @@ package com.jielim36.devgram.service;
 
 import com.jielim36.devgram.common.OAuthProvider;
 import com.jielim36.devgram.common.OAuthUserConvert;
-import com.jielim36.devgram.entity.User;
+import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.AuthMapper;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
@@ -50,13 +50,13 @@ public class AuthService {
 //        user.setAvatar_url(principal.getAttribute("avatar_url"));
         // GitHub account would not return email
 //        user.setEmail(principal.getAttribute("email"));
-        User user = OAuthUserConvert.convertGithubUser(principal);
+        UserEntity user = OAuthUserConvert.convertGithubUser(principal);
 
         authMapper.insertGithubUser(user);
     }
 
     public void register_google(OAuth2AuthenticatedPrincipal principal) {
-        User user = OAuthUserConvert.convertGoogleUser(principal);
+        UserEntity user = OAuthUserConvert.convertGoogleUser(principal);
 
         authMapper.insertGoogleUser(user);
     }

@@ -1,11 +1,11 @@
 package com.jielim36.devgram.common;
 
-import com.jielim36.devgram.entity.User;
+import com.jielim36.devgram.entity.UserEntity;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 public class OAuthUserConvert {
 
-    public static User convertUser(String providerId, OAuth2AuthenticatedPrincipal principal) {
+    public static UserEntity convertUser(String providerId, OAuth2AuthenticatedPrincipal principal) {
         if (OAuthProvider.GITHUB.getProviderName().equals(providerId)) {
             return convertGithubUser(principal);
         } else if (OAuthProvider.GOOGLE.getProviderName().equals(providerId)) {
@@ -15,8 +15,8 @@ public class OAuthUserConvert {
         return null;
     }
 
-    public static User convertGithubUser(OAuth2AuthenticatedPrincipal principal) {
-        User user = new User();
+    public static UserEntity convertGithubUser(OAuth2AuthenticatedPrincipal principal) {
+        UserEntity user = new UserEntity();
         user.setGithub_id(principal.getAttribute("id"));
         user.setUsername(principal.getAttribute("login"));
         user.setAvatar_url(principal.getAttribute("avatar_url"));
@@ -24,8 +24,8 @@ public class OAuthUserConvert {
         return user;
     }
 
-    public static User convertGoogleUser(OAuth2AuthenticatedPrincipal principal) {
-        User user = new User();
+    public static UserEntity convertGoogleUser(OAuth2AuthenticatedPrincipal principal) {
+        UserEntity user = new UserEntity();
         user.setGoogle_id(principal.getAttribute("sub"));
         user.setUsername(principal.getAttribute("name"));
         user.setEmail(principal.getAttribute("email"));
