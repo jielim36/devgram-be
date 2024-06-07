@@ -36,3 +36,9 @@ spring:
 
 myapp:
   url: http://localhost:3000
+
+amazonProperties:
+  endpointUrl: https://s3.ap-southeast-1.amazonaws.com
+  accessKey: AKIA2UC3BYNK7WYVHQDC
+  secretKey: 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
+  bucketName: jielim36-devgram
