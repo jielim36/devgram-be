@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jielim36.devgram.mapper.PostMapper">
+    <insert id="addPost" parameterType="com.jielim36.devgram.entity.PostEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO post (user_id, description) VALUES (#{user_id}, #{description})
+    </insert>
+</mapper>

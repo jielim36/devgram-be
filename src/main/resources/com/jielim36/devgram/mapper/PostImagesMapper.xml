@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jielim36.devgram.mapper.PostImagesMapper">
+    <insert id="addPostImage" parameterType="com.jielim36.devgram.entity.PostImageEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO post_images (post_id, image_url, position) VALUES (#{post_id}, #{image_url}, #{position})
+    </insert>
+</mapper>
