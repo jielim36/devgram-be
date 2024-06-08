@@ -4,7 +4,7 @@ import com.jielim36.devgram.entity.StoryEntity;
 import com.jielim36.devgram.entity.UserEntity;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.lang.String;
 
 public class UserDTO {
 
@@ -15,8 +15,8 @@ public class UserDTO {
     private String email;
     private String avatar_url;
     private boolean is_active;
-    private Date created_at;
-    private Date updated_at;
+    private String created_at;
+    private String updated_at;
     private StoryEntity[] stories;
 
     public UserDTO() {
@@ -47,7 +47,7 @@ public class UserDTO {
         this.stories = stories;
     }
 
-    public UserDTO(Long id, String username, Integer github_id, String google_id, String email, String avatar_url, boolean is_active, Date created_at, Date updated_at) {
+    public UserDTO(Long id, String username, Integer github_id, String google_id, String email, String avatar_url, boolean is_active, String created_at, String updated_at) {
         this.id = id;
         this.username = username;
         this.github_id = github_id;
@@ -115,19 +115,19 @@ public class UserDTO {
         this.is_active = is_active;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 

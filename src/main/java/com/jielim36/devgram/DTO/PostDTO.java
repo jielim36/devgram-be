@@ -3,20 +3,18 @@ package com.jielim36.devgram.DTO;
 import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.entity.PostEntity;
 
-import java.util.Date;
-
 public class PostDTO {
 
     private Long id;
     private UserDTO user;
     private String description;
-    private Date created_at;
-    private Date updated_at;
+    private String created_at;
+    private String updated_at;
     private String[] images_url;
     private CommentDTO[] comments;
     private LikeDTO[] likes;
 
-    public PostDTO(Long id, UserDTO user, String description, Date created_at, Date updated_at, String[] images_url, CommentDTO[] comments, LikeDTO[] likes) {
+    public PostDTO(Long id, UserDTO user, String description, String created_at, String updated_at, String[] images_url, CommentDTO[] comments, LikeDTO[] likes) {
         this.id = id;
         this.user = user;
         this.description = description;
@@ -31,8 +29,8 @@ public class PostDTO {
         this.id = postEntity.getId();
         this.user = user;
         this.description = postEntity.getDescription();
-        this.created_at = postEntity.getCreated_at();
-        this.updated_at = postEntity.getUpdated_at();
+        this.created_at = postEntity.getCreated_at().toString();
+        this.updated_at = postEntity.getUpdated_at().toString();
         this.comments = comments;
         this.images_url = images_url;
         this.likes = likes;
@@ -62,19 +60,19 @@ public class PostDTO {
         this.description = description;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 

@@ -8,14 +8,16 @@ public class StoryEntity {
     private Long id;
     private Long user_id;
     private String image_url;
+    private String created_at;
 
     public StoryEntity() {
     }
 
-    public StoryEntity(Long id, Long user_id, String image_url) {
+    public StoryEntity(Long id, Long user_id, String image_url, String created_at) {
         this.id = id;
         this.user_id = user_id;
         this.image_url = image_url;
+        this.created_at = created_at;
     }
 
     public Long getId() {
@@ -40,5 +42,13 @@ public class StoryEntity {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 }
