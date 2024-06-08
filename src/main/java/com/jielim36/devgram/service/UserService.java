@@ -1,7 +1,7 @@
 package com.jielim36.devgram.service;
 
-import com.jielim36.devgram.common.OAuthProvider;
-import com.jielim36.devgram.common.OAuthUserConvert;
+import com.jielim36.devgram.enums.OAuthProviderEnum;
+import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.UserMapper;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -24,9 +24,9 @@ public class UserService {
 
         UserEntity user = OAuthUserConvert.convertUser(providerId, userPrincipal);
 
-        if (providerId.equals(OAuthProvider.GITHUB.getProviderName())) {
+        if (providerId.equals(OAuthProviderEnum.GITHUB.getProviderName())) {
             return selectUserByGithubId(user.getGithub_id());
-        } else if (providerId.equals(OAuthProvider.GOOGLE.getProviderName())) {
+        } else if (providerId.equals(OAuthProviderEnum.GOOGLE.getProviderName())) {
             return selectUserByGoogleId(user.getGoogle_id());
         }
         return null;

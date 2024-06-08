@@ -8,4 +8,6 @@ public interface PostMapper {
 
     void addPost(PostEntity post);
 
+    PostEntity[] getPopularPosts();
+
 }

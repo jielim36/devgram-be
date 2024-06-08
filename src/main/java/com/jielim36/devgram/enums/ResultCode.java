@@ -1,4 +1,4 @@
-package com.jielim36.devgram.common.Response;
+package com.jielim36.devgram.enums;
 
 public enum  ResultCode {
     SUCCESS(200, "Success"),

@@ -1,7 +1,11 @@
 package com.jielim36.devgram.service;
 
+import com.jielim36.devgram.DTO.CommentDTO;
+import com.jielim36.devgram.DTO.LikeDTO;
+import com.jielim36.devgram.DTO.PostDTO;
 import com.jielim36.devgram.entity.PostEntity;
 import com.jielim36.devgram.entity.PostImageEntity;
+import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.PostImagesMapper;
 import com.jielim36.devgram.mapper.PostMapper;
 import org.springframework.stereotype.Service;
@@ -13,13 +17,25 @@ public class PostService {
     private final AmazonClient amazonClient;
     private final PostMapper postMapper;
     private final PostImagesMapper postImagesMapper;
+    private final UserService userService;
+    private final PostImagesService postImagesService;
+    private final CommentService commentService;
+    private final LikeService likeService;
 
     public PostService(AmazonClient amazonClient,
                        PostMapper postMapper,
-                       PostImagesMapper postImagesMapper) {
+                       PostImagesMapper postImagesMapper,
+                       UserService userService,
+                       PostImagesService postImagesService,
+                       CommentService commentService,
+                       LikeService likeService) {
         this.amazonClient = amazonClient;
         this.postMapper = postMapper;
         this.postImagesMapper = postImagesMapper;
+        this.userService = userService;
+        this.postImagesService = postImagesService;
+        this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     public boolean addPost(MultipartFile[] files, String description, Long userId) {
@@ -47,6 +63,33 @@ public class PostService {
         }
 
         return true;
+    }
+
+    public PostDTO[] getPopularPosts() {
+        PostEntity[] popularPosts = postMapper.getPopularPosts();
+
+        if (popularPosts == null || popularPosts.length == 0 || popularPosts[0] == null) {
+            return null;
+        }
+
+        PostDTO[] postDTOs = new PostDTO[popularPosts.length];
+
+        for (int i = 0; i < popularPosts.length; i++) {
+            UserEntity userEntity = userService.selectUserById(popularPosts[i].getUser_id());
+            PostImageEntity[] postImagesByPostId = postImagesService.getPostImagesByPostId(popularPosts[i].getId());
+
+            String[] images_url = new String[postImagesByPostId.length];
+            for (int j = 0; j < postImagesByPostId.length; j++) {
+                images_url[j] = postImagesByPostId[j].getImage_url();
+            }
+
+            CommentDTO[] commentsByPostId = commentService.getCommentsByPostId(popularPosts[i].getId());
+
+            LikeDTO[] likesByPostId = likeService.getLikesByPostId(popularPosts[i].getId());
+
+            postDTOs[i] = new PostDTO(popularPosts[i], userEntity.convertToDTO(),images_url, commentsByPostId, likesByPostId);
+        }
+        return postDTOs;
     }
 
 }

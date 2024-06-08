@@ -1,10 +1,16 @@
 package com.jielim36.devgram.entity;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class StoryEntity {
 
     private Long id;
     private Long user_id;
     private String image_url;
+
+    public StoryEntity() {
+    }
 
     public StoryEntity(Long id, Long user_id, String image_url) {
         this.id = id;

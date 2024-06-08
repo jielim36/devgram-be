@@ -1,11 +1,13 @@
-package com.jielim36.devgram.common.DTO;
+package com.jielim36.devgram.DTO;
 
 import com.jielim36.devgram.entity.StoryEntity;
 import com.jielim36.devgram.entity.UserEntity;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class UserDTO {
+
     private Long id;
     private String username;
     private Integer github_id;
@@ -135,5 +137,21 @@ public class UserDTO {
 
     public void setStories(StoryEntity[] stories) {
         this.stories = stories;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", github_id=" + github_id +
+                ", google_id='" + google_id + '\'' +
+                ", email='" + email + '\'' +
+                ", avatar_url='" + avatar_url + '\'' +
+                ", is_active=" + is_active +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                ", stories=" + Arrays.toString(stories) +
+                '}';
     }
 }

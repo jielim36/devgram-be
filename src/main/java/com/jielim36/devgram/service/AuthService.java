@@ -1,7 +1,7 @@
 package com.jielim36.devgram.service;
 
-import com.jielim36.devgram.common.OAuthProvider;
-import com.jielim36.devgram.common.OAuthUserConvert;
+import com.jielim36.devgram.enums.OAuthProviderEnum;
+import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.AuthMapper;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -18,9 +18,9 @@ public class AuthService {
 
     public boolean checkUserExists(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
 
-        if (OAuthProvider.GITHUB.getProviderName().equals(providerId)) {
+        if (OAuthProviderEnum.GITHUB.getProviderName().equals(providerId)) {
             return checkUserExists_github(userPrincipal.getAttribute("id"));
-        } else if (OAuthProvider.GOOGLE.getProviderName().equals(providerId)) {
+        } else if (OAuthProviderEnum.GOOGLE.getProviderName().equals(providerId)) {
             return checkUserExists_google(userPrincipal.getAttribute("sub"));
         }
 
@@ -36,9 +36,9 @@ public class AuthService {
     }
 
     public void register(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
-        if (OAuthProvider.GITHUB.getProviderName().equals(providerId)) {
+        if (OAuthProviderEnum.GITHUB.getProviderName().equals(providerId)) {
             register_github(userPrincipal);
-        } else if (OAuthProvider.GOOGLE.getProviderName().equals(providerId)) {
+        } else if (OAuthProviderEnum.GOOGLE.getProviderName().equals(providerId)) {
             register_google(userPrincipal);
         }
     }

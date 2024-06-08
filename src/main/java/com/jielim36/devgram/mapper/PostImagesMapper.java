@@ -8,4 +8,6 @@ public interface PostImagesMapper {
 
     void addPostImage(PostImageEntity postImage);
 
+    PostImageEntity[] getPostImagesByPostId(Long postId);
+
 }

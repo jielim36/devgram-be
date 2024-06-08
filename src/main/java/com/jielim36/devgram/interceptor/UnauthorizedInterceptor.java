@@ -1,7 +1,4 @@
 package com.jielim36.devgram.interceptor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jielim36.devgram.common.Response.ResultCode;
-import com.jielim36.devgram.common.Response.ResultResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

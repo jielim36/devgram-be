@@ -1,7 +1,7 @@
 package com.jielim36.devgram.handler;
 
-import com.jielim36.devgram.common.Response.ResultCode;
-import com.jielim36.devgram.common.Response.ResultResponse;
+import com.jielim36.devgram.enums.ResultCode;
+import com.jielim36.devgram.common.ResultResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

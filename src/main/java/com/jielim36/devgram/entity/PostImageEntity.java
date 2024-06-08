@@ -1,11 +1,17 @@
 package com.jielim36.devgram.entity;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class PostImageEntity {
 
     private Long id;
     private Long post_id;
     private String image_url;
     private Integer position;
+
+    public PostImageEntity() {
+    }
 
     public PostImageEntity(Long id, Long post_id, String image_url, Integer position) {
         this.id = id;

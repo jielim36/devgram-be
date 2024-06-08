@@ -1,7 +1,10 @@
 package com.jielim36.devgram.entity;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.Date;
 
+@Repository
 public class PostEntity {
 
     private Long id;
@@ -9,6 +12,9 @@ public class PostEntity {
     private String description;
     private Date created_at;
     private Date updated_at;
+
+    public PostEntity() {
+    }
 
     public PostEntity(Long id, Long user_id, String description, Date created_at, Date updated_at) {
         this.id = id;

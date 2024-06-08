@@ -1,4 +1,6 @@
-package com.jielim36.devgram.common.Response;
+package com.jielim36.devgram.common;
+
+import com.jielim36.devgram.enums.ResultCode;
 
 import java.io.Serializable;
 

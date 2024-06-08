@@ -1,14 +1,15 @@
-package com.jielim36.devgram.common;
+package com.jielim36.devgram.utils;
 
+import com.jielim36.devgram.enums.OAuthProviderEnum;
 import com.jielim36.devgram.entity.UserEntity;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 public class OAuthUserConvert {
 
     public static UserEntity convertUser(String providerId, OAuth2AuthenticatedPrincipal principal) {
-        if (OAuthProvider.GITHUB.getProviderName().equals(providerId)) {
+        if (OAuthProviderEnum.GITHUB.getProviderName().equals(providerId)) {
             return convertGithubUser(principal);
-        } else if (OAuthProvider.GOOGLE.getProviderName().equals(providerId)) {
+        } else if (OAuthProviderEnum.GOOGLE.getProviderName().equals(providerId)) {
             return convertGoogleUser(principal);
         }
 

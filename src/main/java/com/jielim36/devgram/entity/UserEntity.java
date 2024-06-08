@@ -1,6 +1,6 @@
 package com.jielim36.devgram.entity;
 
-import com.jielim36.devgram.common.DTO.UserDTO;
+import com.jielim36.devgram.DTO.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

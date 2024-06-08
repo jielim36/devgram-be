@@ -1,12 +1,12 @@
-package com.jielim36.devgram.common;
+package com.jielim36.devgram.enums;
 
-public enum OAuthProvider {
+public enum OAuthProviderEnum {
     GOOGLE("google"),
     GITHUB("github");
 
     private final String providerName;
 
-    OAuthProvider(String providerName) {
+    OAuthProviderEnum(String providerName) {
         this.providerName = providerName;
     }
 

@@ -6,4 +6,9 @@
     <insert id="addPost" parameterType="com.jielim36.devgram.entity.PostEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO post (user_id, description) VALUES (#{user_id}, #{description})
     </insert>
+
+    <!--    TODO: implement popular algorithms such as depend on likes -->
+    <select id="getPopularPosts" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT * FROM post;
+    </select>
 </mapper>

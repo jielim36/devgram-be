@@ -1,8 +1,8 @@
 package com.jielim36.devgram.controller;
 
-import com.jielim36.devgram.common.DTO.UserDTO;
-import com.jielim36.devgram.common.Response.ResultCode;
-import com.jielim36.devgram.common.Response.ResultResponse;
+import com.jielim36.devgram.DTO.UserDTO;
+import com.jielim36.devgram.enums.ResultCode;
+import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

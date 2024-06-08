@@ -6,4 +6,8 @@
     <insert id="addPostImage" parameterType="com.jielim36.devgram.entity.PostImageEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO post_images (post_id, image_url, position) VALUES (#{post_id}, #{image_url}, #{position})
     </insert>
+
+    <select id="getPostImagesByPostId" resultType="com.jielim36.devgram.entity.PostImageEntity">
+        SELECT * FROM post_images WHERE post_id = #{post_id} ORDER BY position ASC
+    </select>
 </mapper>
