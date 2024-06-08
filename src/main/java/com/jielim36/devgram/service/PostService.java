@@ -56,7 +56,7 @@ public class PostService {
             // after added image in S3, save the img url in database
             PostImageEntity postImage = new PostImageEntity(post.getId(), fileUrl, i);
             postImagesMapper.addPostImage(postImage);
-            if (postImage == null || postImage.getId() == null) {
+            if (postImage.getId() == null) {
                 amazonClient.deleteFileFromS3Bucket(fileUrl);
                 return false;
             }
