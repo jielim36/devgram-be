@@ -1,44 +1,28 @@
-package com.jielim36.devgram.entity;
+package com.jielim36.devgram.DTO;
 
-import org.springframework.stereotype.Repository;
-
-@Repository
-public class CommentEntity {
+public class CommentDTO {
 
     private Long id;
     private Long post_id;
-    private Long parent_id; // if it is a reply to another comment
-    private Long user_id;
+    private Long parent_id;
+    private UserDTO user;
     private String content;
+    private Integer like_count;
     private String created_at;
     private String updated_at;
 
-    public CommentEntity() {
+    public CommentDTO() {
     }
 
-    public CommentEntity(Long id, Long post_id, Long parent_id, Long user_id, String content, String created_at, String updated_at) {
+    public CommentDTO(Long id, Long post_id, Long parent_id, UserDTO user, String content, Integer like_count, String created_at, String updated_at) {
         this.id = id;
         this.post_id = post_id;
         this.parent_id = parent_id;
-        this.user_id = user_id;
+        this.user = user;
         this.content = content;
+        this.like_count = like_count;
         this.created_at = created_at;
         this.updated_at = updated_at;
-    }
-
-    public CommentEntity(Long id, Long post_id, Long parent_id, Long user_id, String content) {
-        this.id = id;
-        this.post_id = post_id;
-        this.parent_id = parent_id;
-        this.user_id = user_id;
-        this.content = content;
-    }
-
-    public CommentEntity(Long post_id, Long parent_id, Long user_id, String content) {
-        this.post_id = post_id;
-        this.parent_id = parent_id;
-        this.user_id = user_id;
-        this.content = content;
     }
 
     public Long getId() {
@@ -65,12 +49,12 @@ public class CommentEntity {
         this.parent_id = parent_id;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUser(UserDTO user_id) {
+        this.user= user_id;
     }
 
     public String getContent() {
@@ -95,5 +79,26 @@ public class CommentEntity {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Integer getLike_count() {
+        return like_count;
+    }
+
+    public void setLike_count(Integer like_count) {
+        this.like_count = like_count;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" +
+                "id=" + id +
+                ", post_id=" + post_id +
+                ", parent_id=" + parent_id +
+                ", user=" + user +
+                ", content='" + content + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                '}';
     }
 }
