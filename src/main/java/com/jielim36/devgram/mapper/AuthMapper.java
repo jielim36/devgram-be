@@ -13,4 +13,8 @@ public interface AuthMapper {
 
     void insertGoogleUser(UserEntity user);
 
+    Long getUserIdByGithubId(Integer github_id);
+
+    Long getUserIdByGoogleId(String google_id);
+
 }

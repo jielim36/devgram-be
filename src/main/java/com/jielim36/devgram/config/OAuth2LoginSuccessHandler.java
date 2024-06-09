@@ -36,7 +36,6 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         if (authentication instanceof OAuth2AuthenticationToken) {
             String providerId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
             OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
-
             if (!authService.checkUserExists(providerId, principal)) {
                 //create new user
                 authService.register(providerId, principal);

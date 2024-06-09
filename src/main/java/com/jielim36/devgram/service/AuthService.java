@@ -61,4 +61,22 @@ public class AuthService {
         authMapper.insertGoogleUser(user);
     }
 
+    public Long getUserIdByProviderId(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
+        if (OAuthProviderEnum.GITHUB.getProviderName().equals(providerId)) {
+            return getUserIdByGithubId((Integer) userPrincipal.getAttribute("id"));
+        } else if (OAuthProviderEnum.GOOGLE.getProviderName().equals(providerId)) {
+            return getUserIdByGoogleId((String) userPrincipal.getAttribute("sub"));
+        }
+
+        return null;
+    }
+
+    public Long getUserIdByGithubId(Integer github_id) {
+        return authMapper.getUserIdByGithubId(github_id);
+    }
+
+    public Long getUserIdByGoogleId(String google_id) {
+        return authMapper.getUserIdByGoogleId(google_id);
+    }
+
 }

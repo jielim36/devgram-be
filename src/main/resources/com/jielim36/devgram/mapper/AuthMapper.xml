@@ -20,4 +20,13 @@
         INSERT INTO `user` (google_id, username, email, avatar_url, created_at, updated_at)
         VALUES (#{google_id}, #{username}, #{email}, #{avatar_url}, #{created_at}, #{updated_at})
     </insert>
+
+    <select id="getUserIdByGithubId" resultType="Long">
+        SELECT id FROM user WHERE github_id = #{githubId}
+    </select>
+
+    <select id="getUserIdByGoogleId" resultType="Long">
+        SELECT id FROM user WHERE google_id = #{googleId}
+    </select>
+
 </mapper>
