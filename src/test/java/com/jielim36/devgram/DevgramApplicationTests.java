@@ -8,6 +8,7 @@ import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.mapper.CommentMapper;
 import com.jielim36.devgram.mapper.LikeMapper;
 import com.jielim36.devgram.mapper.UserMapper;
+import com.jielim36.devgram.service.LikeService;
 import com.jielim36.devgram.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ class DevgramApplicationTests {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private LikeService likeService;
 
     private final Long userId = 1001L;
 
@@ -78,6 +82,14 @@ class DevgramApplicationTests {
     void getCommentByPostId() {
         CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L);
         System.out.println(Arrays.toString(commentsByPostId));
+    }
+
+    @Test
+    void unlikePost() {
+        Long postId = 1L;
+
+        boolean isSuccess = likeService.removeLike(postId, userId, LikeTypeEnum.POST);
+        System.out.println(isSuccess);
     }
 
 }

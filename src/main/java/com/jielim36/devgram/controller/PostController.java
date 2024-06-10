@@ -1,10 +1,14 @@
 package com.jielim36.devgram.controller;
 
+import com.jielim36.devgram.CustomAnnotation.UserIdRequired.UserIdRequired;
 import com.jielim36.devgram.DTO.PostDTO;
+import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.service.AmazonClient;
+import com.jielim36.devgram.service.LikeService;
 import com.jielim36.devgram.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,10 +18,15 @@ public class PostController {
 
     private final AmazonClient amazonClient;
     private final PostService postService;
+    private final LikeService likeService;
 
-    public PostController(AmazonClient amazonClient, PostService postService) {
+    public PostController(
+                AmazonClient amazonClient,
+                PostService postService,
+                LikeService likeService) {
         this.amazonClient = amazonClient;
         this.postService = postService;
+        this.likeService = likeService;
     }
 
     @GetMapping("/popular")
@@ -28,7 +37,8 @@ public class PostController {
             return ResultResponse.failure(ResultCode.NOT_FOUND, "No popular posts found.");
         }
 
-        return ResultResponse.success(popularPosts);
+        ResultResponse success = ResultResponse.success(popularPosts);
+        return success;
     }
 
     @PostMapping("/{userId}")
@@ -40,5 +50,26 @@ public class PostController {
 
         return ResultResponse.success(isSuccess);
     }
+
+    @UserIdRequired
+    @PostMapping("/{postId}/likes")
+    public ResultResponse<Boolean> likePost(@PathVariable Long postId, HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+
+        boolean isSuccess = likeService.addLike(postId, userId, LikeTypeEnum.POST);
+
+        return ResultResponse.success(isSuccess);
+    }
+
+    @UserIdRequired
+    @DeleteMapping("/{postId}/likes")
+    public ResultResponse<Boolean> unlikePost(@PathVariable Long postId, HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+
+        boolean isSuccess = likeService.removeLike(postId, userId, LikeTypeEnum.POST);
+
+        return ResultResponse.success(isSuccess);
+    }
+
 
 }
