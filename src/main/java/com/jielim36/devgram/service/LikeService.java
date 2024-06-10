@@ -17,14 +17,28 @@ public class LikeService {
         this.likeMapper = likeMapper;
     }
 
-    public void addLike(Long postId, Long userId, LikeTypeEnum type) {
-        LikeEntity like = new LikeEntity(null, postId, userId, type);
+    public boolean addLike(Long parent_id, Long userId, LikeTypeEnum type) {
+        LikeEntity like = new LikeEntity(null, parent_id, userId, type);
         likeMapper.addLike(like);
+
+        return like.getId() != null;
+    }
+
+    public boolean removeLike(Long postId, Long userId, LikeTypeEnum type) {
+        LikeEntity like = new LikeEntity(null, postId, userId, type);
+        int affectedRows = likeMapper.removeLike(like);
+
+        return affectedRows > 0;
     }
 
     public LikeDTO[] getLikesByPostId(Long postId) {
         LikeDTO[] likesByPostId = likeMapper.getLikesByPostId(postId);
         return likesByPostId;
+    }
+
+    public boolean isLikedByUser(Long parent_id, Long userId, LikeTypeEnum type) {
+        LikeEntity like = likeMapper.isLikedByUser(parent_id, userId, type);
+        return like != null;
     }
 
 }

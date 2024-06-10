@@ -15,7 +15,7 @@
         <result property="like_count" column="like_count"/>
 
         <association property="user" javaType="com.jielim36.devgram.DTO.UserDTO">
-            <id property="id" column="id"/>
+            <id property="id" column="user_id"/>
             <result property="username" column="username"/>
             <result property="avatar_url" column="avatar_url"/>
         </association>
@@ -24,7 +24,7 @@
     <select id="getCommentsByPostId" resultMap="CommentDTO">
         SELECT
         c.id, c.post_id, c.parent_id, c.content, c.created_at, c.updated_at,
-        u.id, u.username, u.avatar_url,
+        u.id AS user_id, u.username, u.avatar_url,
         (
             SELECT COUNT(*) FROM `like` l WHERE l.parent_id = c.id AND l.type = 'comment'
         ) AS like_count

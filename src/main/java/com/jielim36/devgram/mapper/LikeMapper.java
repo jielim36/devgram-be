@@ -10,7 +10,11 @@ public interface LikeMapper {
 
     void addLike(LikeEntity like);
 
+    int removeLike(LikeEntity like);
+
     LikeDTO[] getLikesByPostId(Long postId);
+
+    LikeEntity isLikedByUser(Long parent_id, Long userId, LikeTypeEnum type);
 
     Integer getLikesCountByParentId(Long parentId, LikeTypeEnum type);
 

@@ -65,13 +65,19 @@ class DevgramApplicationTests {
 
     @Test
     void testGetLikesByPostId() {
-        LikeDTO[] likesByPostId = likeMapper.getLikesByPostId(3L);
+        LikeDTO[] likesByPostId = likeMapper.getLikesByPostId(1L);
         System.out.println(Arrays.toString(likesByPostId));
     }
 
     @Test
     void testGetPopularPost() {
         System.out.println(Arrays.toString(postService.getPopularPosts()));
+    }
+
+    @Test
+    void getCommentByPostId() {
+        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L);
+        System.out.println(Arrays.toString(commentsByPostId));
     }
 
 }

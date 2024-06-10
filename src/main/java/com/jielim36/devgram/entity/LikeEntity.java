@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 public class LikeEntity {
 
     private Long id;
-    private Long parent_id;
+    private Long parent_id;// post_id or comment_id
     private Long user_id;
     private LikeTypeEnum type;
     private String created_at;

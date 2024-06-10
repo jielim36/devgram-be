@@ -5,6 +5,8 @@ import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.mapper.CommentMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 public class CommentService {
 
