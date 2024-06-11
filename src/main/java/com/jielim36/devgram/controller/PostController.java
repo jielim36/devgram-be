@@ -29,9 +29,12 @@ public class PostController {
         this.likeService = likeService;
     }
 
+    @UserIdRequired
     @GetMapping("/popular")
-    public ResultResponse<PostDTO> getPopularPosts() {
-        PostDTO[] popularPosts = postService.getPopularPosts();
+    public ResultResponse<PostDTO> getPopularPosts(HttpServletRequest request) {
+        Long user_id = (Long) request.getAttribute("userId");
+
+        PostDTO[] popularPosts = postService.getPopularPosts(user_id);
 
         if(popularPosts == null || popularPosts.length == 0 || popularPosts[0] == null) {
             return ResultResponse.failure(ResultCode.NOT_FOUND, "No popular posts found.");
@@ -68,14 +71,18 @@ public class PostController {
     public ResultResponse<Boolean> unlikePost(@PathVariable Long postId, HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
 
-        boolean isSuccess = likeService.unlikePost(postId, userId, LikeTypeEnum.POST);
+        boolean isSuccess = likeService.unlike(postId, userId, LikeTypeEnum.POST);
 
         return ResultResponse.success(isSuccess);
     }
 
+    @UserIdRequired
     @GetMapping("/{postId}")
-    public ResultResponse<PostDTO> getPost(@PathVariable Long postId) {
-        PostDTO post = postService.getPostById(postId);
+    public ResultResponse<PostDTO> getPost(@PathVariable Long postId, HttpServletRequest request) {
+
+        Long userId = (Long) request.getAttribute("userId");
+
+        PostDTO post = postService.getPostById(postId, userId);
 
         if(post == null) {
             return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Post not found.");

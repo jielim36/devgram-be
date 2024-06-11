@@ -65,7 +65,7 @@ public class PostService {
         return true;
     }
 
-    public PostDTO getPostDTOByPostEntity(PostEntity post) {
+    public PostDTO getPostDTOByPostEntity(PostEntity post, Long user_id) {
         UserEntity userEntity = userService.selectUserById(post.getUser_id());
         PostImageEntity[] postImagesByPostId = postImagesService.getPostImagesByPostId(post.getId());
 
@@ -74,22 +74,22 @@ public class PostService {
             images_url[j] = postImagesByPostId[j].getImage_url();
         }
 
-        CommentDTO[] commentsByPostId = commentService.getCommentsByPostId(post.getId());
+        CommentDTO[] commentsByPostId = commentService.getCommentsByPostId(post.getId(), user_id);
 
         LikeDTO[] likesByPostId = likeService.getLikesByPostId(post.getId());
 
         return new PostDTO(post, userEntity.convertToDTO(), images_url, commentsByPostId, likesByPostId);
     }
 
-    public PostDTO getPostById(Long postId) {
+    public PostDTO getPostById(Long postId, Long user_id) {
         PostEntity post = postMapper.getPostByPostId(postId);
         if (post == null) {
             return null;
         }
-        return getPostDTOByPostEntity(post);
+        return getPostDTOByPostEntity(post, user_id);
     }
 
-    public PostDTO[] getPopularPosts() {
+    public PostDTO[] getPopularPosts(Long user_id) {
         PostEntity[] popularPosts = postMapper.getPopularPosts();
         if (popularPosts == null) {
             return null;
@@ -97,7 +97,7 @@ public class PostService {
 
         PostDTO[] popularPostsDTO = new PostDTO[popularPosts.length];
         for (int i = 0; i < popularPosts.length; i++) {
-            popularPostsDTO[i] = getPostDTOByPostEntity(popularPosts[i]);
+            popularPostsDTO[i] = getPostDTOByPostEntity(popularPosts[i],user_id);
         }
 
         return popularPostsDTO;

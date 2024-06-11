@@ -8,19 +8,21 @@ public class CommentDTO {
     private UserDTO user;
     private String content;
     private Integer like_count;
+    private Boolean is_liked;
     private String created_at;
     private String updated_at;
 
     public CommentDTO() {
     }
 
-    public CommentDTO(Long id, Long post_id, Long parent_id, UserDTO user, String content, Integer like_count, String created_at, String updated_at) {
+    public CommentDTO(Long id, Long post_id, Long parent_id, UserDTO user, String content, Integer like_count,boolean is_liked, String created_at, String updated_at) {
         this.id = id;
         this.post_id = post_id;
         this.parent_id = parent_id;
         this.user = user;
         this.content = content;
         this.like_count = like_count;
+        this.is_liked = is_liked;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -89,6 +91,14 @@ public class CommentDTO {
         this.like_count = like_count;
     }
 
+    public Boolean getIs_liked() {
+        return is_liked;
+    }
+
+    public void setIs_liked(Boolean is_liked) {
+        this.is_liked = is_liked;
+    }
+
     @Override
     public String toString() {
         return "CommentDTO{" +
@@ -97,6 +107,8 @@ public class CommentDTO {
                 ", parent_id=" + parent_id +
                 ", user=" + user +
                 ", content='" + content + '\'' +
+                ", like_count=" + like_count +
+                ", is_liked=" + is_liked +
                 ", created_at='" + created_at + '\'' +
                 ", updated_at='" + updated_at + '\'' +
                 '}';

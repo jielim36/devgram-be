@@ -47,7 +47,7 @@ class DevgramApplicationTests {
 
     @Test
     void testSelectComments() {
-        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L);
+        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L, userId);
         System.out.println(Arrays.toString(commentsByPostId));
     }
 
@@ -75,12 +75,12 @@ class DevgramApplicationTests {
 
     @Test
     void testGetPopularPost() {
-        System.out.println(Arrays.toString(postService.getPopularPosts()));
+        System.out.println(Arrays.toString(postService.getPopularPosts(userId)));
     }
 
     @Test
     void getCommentByPostId() {
-        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L);
+        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L,userId);
         System.out.println(Arrays.toString(commentsByPostId));
     }
 
@@ -88,12 +88,18 @@ class DevgramApplicationTests {
     void unlikePost() {
         Long postId = 1L;
 
-        boolean isSuccess = likeService.unlikePost(postId, userId, LikeTypeEnum.POST);
+        boolean isSuccess = likeService.unlike(postId, userId, LikeTypeEnum.POST);
         System.out.println(isSuccess);
     }
 
     @Test
     void getPostById() {
-        System.out.println(postService.getPostById(1L));
+        System.out.println(postService.getPostById(1L, userId));
+    }
+
+    @Test
+    void getPostByNullUserId() {
+        CommentDTO[] comments = postService.getPostById(1L, 1001L).getComments();
+        System.out.println(Arrays.toString(comments));
     }
 }

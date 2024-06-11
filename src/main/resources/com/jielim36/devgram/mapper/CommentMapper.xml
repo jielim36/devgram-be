@@ -13,6 +13,7 @@
         <result property="created_at" column="created_at"/>
         <result property="updated_at" column="updated_at"/>
         <result property="like_count" column="like_count"/>
+        <result property="is_liked" column="is_liked"/>
 
         <association property="user" javaType="com.jielim36.devgram.DTO.UserDTO">
             <id property="id" column="user_id"/>
@@ -30,7 +31,14 @@
             WHERE l.parent_id = c.id
             AND l.type = 'comment'
             AND l.is_deleted = FALSE
-        ) AS like_count
+        ) AS like_count,
+        (
+            SELECT COUNT(*) FROM `like` l
+            WHERE l.parent_id = c.id
+            AND l.type = 'comment'
+            AND l.user_id = #{user_id}
+            AND l.is_deleted = FALSE
+        ) AS is_liked
         FROM
         comment c
         LEFT JOIN

@@ -24,8 +24,8 @@ public class CommentService {
         return comment.getId() != null;
     }
 
-    public CommentDTO[] getCommentsByPostId(Long postId) {
-        return commentMapper.getCommentsByPostId(postId);
+    public CommentDTO[] getCommentsByPostId(Long postId, Long user_id) {
+        return commentMapper.getCommentsByPostId(postId, user_id);
     }
 
 }
