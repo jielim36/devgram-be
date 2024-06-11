@@ -92,4 +92,8 @@ class DevgramApplicationTests {
         System.out.println(isSuccess);
     }
 
+    @Test
+    void getPostById() {
+        System.out.println(postService.getPostById(1L));
+    }
 }

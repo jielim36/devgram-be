@@ -65,31 +65,42 @@ public class PostService {
         return true;
     }
 
+    public PostDTO getPostDTOByPostEntity(PostEntity post) {
+        UserEntity userEntity = userService.selectUserById(post.getUser_id());
+        PostImageEntity[] postImagesByPostId = postImagesService.getPostImagesByPostId(post.getId());
+
+        String[] images_url = new String[postImagesByPostId.length];
+        for (int j = 0; j < postImagesByPostId.length; j++) {
+            images_url[j] = postImagesByPostId[j].getImage_url();
+        }
+
+        CommentDTO[] commentsByPostId = commentService.getCommentsByPostId(post.getId());
+
+        LikeDTO[] likesByPostId = likeService.getLikesByPostId(post.getId());
+
+        return new PostDTO(post, userEntity.convertToDTO(), images_url, commentsByPostId, likesByPostId);
+    }
+
+    public PostDTO getPostById(Long postId) {
+        PostEntity post = postMapper.getPostByPostId(postId);
+        if (post == null) {
+            return null;
+        }
+        return getPostDTOByPostEntity(post);
+    }
+
     public PostDTO[] getPopularPosts() {
         PostEntity[] popularPosts = postMapper.getPopularPosts();
-
-        if (popularPosts == null || popularPosts.length == 0 || popularPosts[0] == null) {
+        if (popularPosts == null) {
             return null;
         }
 
-        PostDTO[] postDTOs = new PostDTO[popularPosts.length];
-
+        PostDTO[] popularPostsDTO = new PostDTO[popularPosts.length];
         for (int i = 0; i < popularPosts.length; i++) {
-            UserEntity userEntity = userService.selectUserById(popularPosts[i].getUser_id());
-            PostImageEntity[] postImagesByPostId = postImagesService.getPostImagesByPostId(popularPosts[i].getId());
-
-            String[] images_url = new String[postImagesByPostId.length];
-            for (int j = 0; j < postImagesByPostId.length; j++) {
-                images_url[j] = postImagesByPostId[j].getImage_url();
-            }
-
-            CommentDTO[] commentsByPostId = commentService.getCommentsByPostId(popularPosts[i].getId());
-
-            LikeDTO[] likesByPostId = likeService.getLikesByPostId(popularPosts[i].getId());
-
-            postDTOs[i] = new PostDTO(popularPosts[i], userEntity.convertToDTO(),images_url, commentsByPostId, likesByPostId);
+            popularPostsDTO[i] = getPostDTOByPostEntity(popularPosts[i]);
         }
-        return postDTOs;
+
+        return popularPostsDTO;
     }
 
 }

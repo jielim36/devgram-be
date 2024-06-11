@@ -11,4 +11,8 @@
     <select id="getPopularPosts" resultType="com.jielim36.devgram.entity.PostEntity">
         SELECT * FROM post;
     </select>
+
+    <select id="getPostByPostId" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT * FROM post WHERE id = #{id};
+    </select>
 </mapper>

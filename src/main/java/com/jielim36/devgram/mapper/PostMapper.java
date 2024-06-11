@@ -10,4 +10,6 @@ public interface PostMapper {
 
     PostEntity[] getPopularPosts();
 
+    PostEntity getPostByPostId(Long id);
+
 }

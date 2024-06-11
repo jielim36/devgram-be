@@ -41,10 +41,12 @@ public class PostController {
         return success;
     }
 
-    @PostMapping("/{userId}")
-    public ResultResponse<Boolean> post(@RequestPart(value = "files") MultipartFile[] files,
+    @UserIdRequired
+    @PostMapping("/")
+    public ResultResponse<Boolean> addPost(@RequestPart(value = "files") MultipartFile[] files,
                                         @RequestPart(value = "description") String description,
-                                        @PathVariable Long userId) {
+                                        HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
 
         Boolean isSuccess = postService.addPost(files, description, userId);
 
@@ -71,5 +73,15 @@ public class PostController {
         return ResultResponse.success(isSuccess);
     }
 
+    @GetMapping("/{postId}")
+    public ResultResponse<PostDTO> getPost(@PathVariable Long postId) {
+        PostDTO post = postService.getPostById(postId);
+
+        if(post == null) {
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Post not found.");
+        }
+
+        return ResultResponse.success(post);
+    }
 
 }
