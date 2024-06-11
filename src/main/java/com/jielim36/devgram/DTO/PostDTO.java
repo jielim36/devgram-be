@@ -3,6 +3,8 @@ package com.jielim36.devgram.DTO;
 import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.entity.PostEntity;
 
+import java.util.Arrays;
+
 public class PostDTO {
 
     private Long id;
@@ -98,5 +100,19 @@ public class PostDTO {
 
     public void setLikes(LikeDTO[] likes) {
         this.likes = likes;
+    }
+
+    @Override
+    public String toString() {
+        return "PostDTO{" +
+                "id=" + id +
+                ", user=" + user +
+                ", description='" + description + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                ", images_url=" + Arrays.toString(images_url) +
+                ", comments=" + Arrays.toString(comments) +
+                ", likes=" + Arrays.toString(likes) +
+                '}';
     }
 }

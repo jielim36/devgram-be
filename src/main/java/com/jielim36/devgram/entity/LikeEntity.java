@@ -10,6 +10,7 @@ public class LikeEntity {
     private Long parent_id;// post_id or comment_id
     private Long user_id;
     private LikeTypeEnum type;
+    private Boolean is_deleted;
     private String created_at;
 
     public LikeEntity() {
@@ -68,5 +69,13 @@ public class LikeEntity {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public Boolean getIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(Boolean is_deleted) {
+        this.is_deleted = is_deleted;
     }
 }

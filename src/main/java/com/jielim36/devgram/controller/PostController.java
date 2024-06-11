@@ -64,11 +64,11 @@ public class PostController {
     }
 
     @UserIdRequired
-    @DeleteMapping("/{postId}/likes")
+    @PutMapping("/{postId}/likes")
     public ResultResponse<Boolean> unlikePost(@PathVariable Long postId, HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
 
-        boolean isSuccess = likeService.removeLike(postId, userId, LikeTypeEnum.POST);
+        boolean isSuccess = likeService.unlikePost(postId, userId, LikeTypeEnum.POST);
 
         return ResultResponse.success(isSuccess);
     }

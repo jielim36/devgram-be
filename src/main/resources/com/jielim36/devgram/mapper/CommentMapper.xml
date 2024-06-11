@@ -26,7 +26,10 @@
         c.id, c.post_id, c.parent_id, c.content, c.created_at, c.updated_at,
         u.id AS user_id, u.username, u.avatar_url,
         (
-            SELECT COUNT(*) FROM `like` l WHERE l.parent_id = c.id AND l.type = 'comment'
+            SELECT COUNT(*) FROM `like` l
+            WHERE l.parent_id = c.id
+            AND l.type = 'comment'
+            AND l.is_deleted = FALSE
         ) AS like_count
         FROM
         comment c

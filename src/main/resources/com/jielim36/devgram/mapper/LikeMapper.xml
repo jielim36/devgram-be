@@ -28,14 +28,18 @@
 
     <insert id="addLike" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `like` (type, parent_id, user_id) VALUES (#{type}, #{parent_id}, #{user_id})
+        ON DUPLICATE KEY UPDATE
+        is_deleted = FALSE,
+        updated_at = CURRENT_TIMESTAMP
     </insert>
 
-    <delete id="removeLike" parameterType="com.jielim36.devgram.entity.LikeEntity">
-        DELETE FROM `like`
-            WHERE parent_id = #{parent_id}
-            AND user_id = #{user_id}
+    <update id="removeLike" parameterType="com.jielim36.devgram.entity.LikeEntity">
+        UPDATE `like`
+            SET is_deleted = TRUE
+            WHERE user_id = #{user_id}
+            AND parent_id = #{parent_id}
             AND type = #{type};
-    </delete>
+    </update>
 
     <select id="getLikesByPostId" resultMap="LikeDTOResultMap">
         SELECT
@@ -51,8 +55,11 @@
         INNER JOIN
             `user` u ON l.user_id = u.id
         WHERE
-            l.parent_id = #{parent_id} AND
-            l.type = 'post';
+            l.parent_id = #{parent_id}
+        AND
+            l.type = 'post'
+        AND
+            l.is_deleted = FALSE;
     </select>
 
     <select id="getLikesCountByParentId" resultType="int">

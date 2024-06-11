@@ -88,7 +88,7 @@ class DevgramApplicationTests {
     void unlikePost() {
         Long postId = 1L;
 
-        boolean isSuccess = likeService.removeLike(postId, userId, LikeTypeEnum.POST);
+        boolean isSuccess = likeService.unlikePost(postId, userId, LikeTypeEnum.POST);
         System.out.println(isSuccess);
     }
 

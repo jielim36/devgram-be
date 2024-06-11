@@ -24,7 +24,7 @@ public class LikeService {
         return like.getId() != null;
     }
 
-    public boolean removeLike(Long postId, Long userId, LikeTypeEnum type) {
+    public boolean unlikePost(Long postId, Long userId, LikeTypeEnum type) {
         LikeEntity like = new LikeEntity(null, postId, userId, type);
         int affectedRows = likeMapper.removeLike(like);
 
