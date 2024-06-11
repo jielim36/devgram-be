@@ -102,4 +102,9 @@ class DevgramApplicationTests {
         CommentDTO[] comments = postService.getPostById(1L, 1001L).getComments();
         System.out.println(Arrays.toString(comments));
     }
+
+    @Test
+    void likeCommentByCommentId() {
+        likeService.addLike(2L, userId, LikeTypeEnum.COMMENT);
+    }
 }
