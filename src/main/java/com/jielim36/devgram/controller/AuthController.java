@@ -1,5 +1,6 @@
 package com.jielim36.devgram.controller;
 
+import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,11 +35,11 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public ResultResponse<Boolean> logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        response.setStatus(HttpServletResponse.SC_OK);
+        return ResultResponse.success(true);
     }
 
 }
