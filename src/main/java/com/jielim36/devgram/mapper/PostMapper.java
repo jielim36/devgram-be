@@ -12,4 +12,6 @@ public interface PostMapper {
 
     PostEntity getPostByPostId(Long id);
 
+    PostEntity[] getPostsByUserId(Long user_id);
+
 }

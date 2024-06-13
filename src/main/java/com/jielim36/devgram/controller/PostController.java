@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+
 @RestController
 @RequestMapping("/post")
 public class PostController {
@@ -31,7 +33,7 @@ public class PostController {
 
     @UserIdRequired
     @GetMapping("/popular")
-    public ResultResponse<PostDTO> getPopularPosts(HttpServletRequest request) {
+    public ResultResponse<PostDTO[]> getPopularPosts(HttpServletRequest request) {
         Long user_id = (Long) request.getAttribute("userId");
 
         PostDTO[] popularPosts = postService.getPopularPosts(user_id);
@@ -89,6 +91,16 @@ public class PostController {
         }
 
         return ResultResponse.success(post);
+    }
+
+    @GetMapping("/user/{user_id}")
+    public ResultResponse<PostDTO[]> getPostsByUserId(@PathVariable Long user_id) {
+        PostDTO[] postsByUserId = postService.getPostsByUserId(user_id);
+
+        if(postsByUserId == null) {
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Fetching posts failed.");
+        }
+        return ResultResponse.success(postsByUserId);
     }
 
 }

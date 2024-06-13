@@ -15,4 +15,9 @@
     <select id="getPostByPostId" resultType="com.jielim36.devgram.entity.PostEntity">
         SELECT * FROM post WHERE id = #{id};
     </select>
+
+    <select id="getPostsByUserId" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT * FROM post WHERE user_id = #{user_id};
+    </select>
+
 </mapper>

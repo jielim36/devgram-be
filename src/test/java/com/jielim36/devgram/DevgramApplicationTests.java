@@ -107,4 +107,9 @@ class DevgramApplicationTests {
     void likeCommentByCommentId() {
         likeService.addLike(2L, userId, LikeTypeEnum.COMMENT);
     }
+
+    @Test
+    void getPostsByUserId() {
+        System.out.println(Arrays.toString(postService.getPostsByUserId(userId)));
+    }
 }

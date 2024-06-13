@@ -103,4 +103,18 @@ public class PostService {
         return popularPostsDTO;
     }
 
+    public PostDTO[] getPostsByUserId(Long userId) {
+        PostEntity[] postsByUserId = postMapper.getPostsByUserId(userId);
+        if (postsByUserId == null) {
+            return null;
+        }
+
+        PostDTO[] postsDTO = new PostDTO[postsByUserId.length];
+        for (int i = 0; i < postsByUserId.length; i++) {
+            postsDTO[i] = getPostDTOByPostEntity(postsByUserId[i], userId);
+        }
+
+        return postsDTO;
+    }
+
 }
