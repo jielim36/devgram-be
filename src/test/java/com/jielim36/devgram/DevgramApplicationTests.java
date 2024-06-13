@@ -5,9 +5,11 @@ import com.jielim36.devgram.DTO.LikeDTO;
 import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.entity.LikeEntity;
 import com.jielim36.devgram.enums.LikeTypeEnum;
+import com.jielim36.devgram.mapper.AuthMapper;
 import com.jielim36.devgram.mapper.CommentMapper;
 import com.jielim36.devgram.mapper.LikeMapper;
 import com.jielim36.devgram.mapper.UserMapper;
+import com.jielim36.devgram.service.AuthService;
 import com.jielim36.devgram.service.LikeService;
 import com.jielim36.devgram.service.PostService;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,9 @@ class DevgramApplicationTests {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AuthService authService;
 
     @Autowired
     private CommentMapper commentMapper;
@@ -111,5 +116,12 @@ class DevgramApplicationTests {
     @Test
     void getPostsByUserId() {
         System.out.println(Arrays.toString(postService.getPostsByUserId(userId)));
+    }
+
+    @Test
+    void getUserIdByGoogleId() {
+        String googleId = "108112338196828160929";
+        Long userIdByGoogleId = authService.getUserIdByGoogleId(googleId);
+        System.out.println(userIdByGoogleId);
     }
 }

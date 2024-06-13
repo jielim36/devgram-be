@@ -47,7 +47,7 @@ public class PostController {
     }
 
     @UserIdRequired
-    @PostMapping("/")
+    @PostMapping
     public ResultResponse<Boolean> addPost(@RequestPart(value = "files") MultipartFile[] files,
                                         @RequestPart(value = "description") String description,
                                         HttpServletRequest request) {
