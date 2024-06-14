@@ -10,4 +10,8 @@
     <select id="getPostImagesByPostId" resultType="com.jielim36.devgram.entity.PostImageEntity">
         SELECT * FROM post_images WHERE post_id = #{post_id} ORDER BY position ASC
     </select>
+
+    <delete id="deletePostImageByPostId" parameterType="long">
+        DELETE FROM post_images WHERE post_id = #{post_id}
+    </delete>
 </mapper>

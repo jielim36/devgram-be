@@ -124,4 +124,9 @@ class DevgramApplicationTests {
         Long userIdByGoogleId = authService.getUserIdByGoogleId(googleId);
         System.out.println(userIdByGoogleId);
     }
+
+    @Test
+    void deletePostByPostId() {
+        System.out.println(postService.deletePostByPostId(11L));
+    }
 }

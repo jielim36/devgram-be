@@ -8,13 +8,19 @@ import org.springframework.stereotype.Service;
 public class PostImagesService {
 
     private final PostImagesMapper postImagesMapper;
+    private final AmazonClient amazonClient;
 
-    public PostImagesService(PostImagesMapper postImagesMapper) {
+    public PostImagesService(PostImagesMapper postImagesMapper, AmazonClient amazonClient) {
         this.postImagesMapper = postImagesMapper;
+        this.amazonClient = amazonClient;
     }
 
     public void deletePostImagesByPostId(Long postId) {
-//        postImagesMapper.deletePostImagesByPostId(postId);
+        PostImageEntity[] postImagesByPostId = getPostImagesByPostId(postId);
+        for (PostImageEntity postImage : postImagesByPostId) {
+            postImagesMapper.deletePostImageByPostId(postImage.getId());
+            amazonClient.deleteFileFromS3Bucket(postImage.getImage_url());
+        }
     }
 
     public PostImageEntity[] getPostImagesByPostId(Long postId) {

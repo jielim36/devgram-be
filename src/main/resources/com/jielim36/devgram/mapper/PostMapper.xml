@@ -20,4 +20,8 @@
         SELECT * FROM post WHERE user_id = #{user_id};
     </select>
 
+    <delete id="deletePostByPostId" parameterType="long">
+        DELETE FROM post WHERE id = #{id};
+    </delete>
+
 </mapper>

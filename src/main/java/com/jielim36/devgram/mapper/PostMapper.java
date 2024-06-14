@@ -14,4 +14,6 @@ public interface PostMapper {
 
     PostEntity[] getPostsByUserId(Long user_id);
 
+    boolean deletePostByPostId(Long id);
+
 }

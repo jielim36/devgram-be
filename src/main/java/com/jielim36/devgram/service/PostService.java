@@ -117,4 +117,13 @@ public class PostService {
         return postsDTO;
     }
 
+    public boolean deletePostByPostId(Long postId) {
+        PostImageEntity[] postImagesByPostId = postImagesService.getPostImagesByPostId(postId);
+
+        postImagesService.deletePostImagesByPostId(postId);
+        boolean isSuccess = postMapper.deletePostByPostId(postId);
+
+        return isSuccess;
+    }
+
 }

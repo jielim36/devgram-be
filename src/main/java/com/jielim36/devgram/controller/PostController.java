@@ -103,4 +103,10 @@ public class PostController {
         return ResultResponse.success(postsByUserId);
     }
 
+    @DeleteMapping("/{postId}")
+    public ResultResponse<Boolean> deletePost(@PathVariable Long postId) {
+        boolean isSuccess = postService.deletePostByPostId(postId);
+
+        return ResultResponse.success(isSuccess);
+    }
 }
