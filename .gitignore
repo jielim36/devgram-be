@@ -36,3 +36,4 @@ application.properties
 application.yml
 application-local.properties
 application-local.yml
+src/main/resources/application.yml
