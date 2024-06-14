@@ -9,7 +9,7 @@
 
     <!--    TODO: implement popular algorithms such as depend on likes -->
     <select id="getPopularPosts" resultType="com.jielim36.devgram.entity.PostEntity">
-        SELECT * FROM post;
+        SELECT * FROM post ORDER BY created_at DESC;
     </select>
 
     <select id="getPostByPostId" resultType="com.jielim36.devgram.entity.PostEntity">
