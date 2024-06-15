@@ -53,4 +53,9 @@
         VALUES (#{post_id}, #{parent_id}, #{user_id}, #{content})
     </insert>
 
+    <delete id="deleteCommentByCommentId" parameterType="long">
+        DELETE FROM comment
+        WHERE id = #{id}
+    </delete>
+
 </mapper>

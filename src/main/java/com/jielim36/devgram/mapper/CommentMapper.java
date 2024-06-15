@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CommentMapper {
     void addComment(CommentEntity commentEntity);
     CommentDTO[] getCommentsByPostId(Long post_id, Long user_id);
+    boolean deleteCommentByCommentId(Long id);
 
 
 }

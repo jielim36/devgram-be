@@ -41,4 +41,7 @@ public class LikeService {
         return like != null;
     }
 
+    public boolean deleteLikesByCommentId(Long commentId) {
+        return likeMapper.deleteLikesByCommentId(commentId);
+    }
 }

@@ -18,4 +18,6 @@ public interface LikeMapper {
 
     Integer getLikesCountByParentId(Long parentId, LikeTypeEnum type);
 
+    boolean deleteLikesByCommentId(Long commentId);
+
 }

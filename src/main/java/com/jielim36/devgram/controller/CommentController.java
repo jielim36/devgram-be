@@ -68,4 +68,11 @@ public class CommentController {
         return ResultResponse.success(isSuccess);
     }
 
+    @DeleteMapping("/{commentId}")
+    public ResultResponse<Boolean> deleteComment(@PathVariable Long commentId) {
+        boolean isSuccess = commentService.deleteCommentByCommentId(commentId);
+
+        return ResultResponse.success(isSuccess);
+    }
+
 }

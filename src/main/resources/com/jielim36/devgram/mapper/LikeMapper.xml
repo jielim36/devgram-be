@@ -83,4 +83,9 @@
             type = #{type};
     </select>
 
+    <delete id="deleteLikesByCommentId" parameterType="long">
+        DELETE FROM `like`
+        WHERE parent_id = #{parent_id}
+        AND type = 'comment';
+    </delete>
 </mapper>

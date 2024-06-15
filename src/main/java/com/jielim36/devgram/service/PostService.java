@@ -9,6 +9,7 @@ import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.PostImagesMapper;
 import com.jielim36.devgram.mapper.PostMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -117,11 +118,10 @@ public class PostService {
         return postsDTO;
     }
 
+    @Transactional
     public boolean deletePostByPostId(Long postId) {
-        PostImageEntity[] postImagesByPostId = postImagesService.getPostImagesByPostId(postId);
-
-        postImagesService.deletePostImagesByPostId(postId);
         boolean isSuccess = postMapper.deletePostByPostId(postId);
+        postImagesService.deletePostImagesByPostId(postId);
 
         return isSuccess;
     }
