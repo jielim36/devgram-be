@@ -72,4 +72,15 @@ public class PostEntity {
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
+
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "id=" + id +
+                ", user_id=" + user_id +
+                ", description='" + description + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                '}';
+    }
 }

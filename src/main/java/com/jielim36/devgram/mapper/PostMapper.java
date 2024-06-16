@@ -16,4 +16,6 @@ public interface PostMapper {
 
     boolean deletePostByPostId(Long id);
 
+    int updatePost(PostEntity post);
+
 }

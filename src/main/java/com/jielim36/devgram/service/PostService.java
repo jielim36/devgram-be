@@ -126,4 +126,8 @@ public class PostService {
         return isSuccess;
     }
 
+    public boolean updatePost(PostEntity post) {
+        return postMapper.updatePost(post) > 0;
+    }
+
 }

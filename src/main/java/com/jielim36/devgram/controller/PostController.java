@@ -2,6 +2,7 @@ package com.jielim36.devgram.controller;
 
 import com.jielim36.devgram.CustomAnnotation.UserIdRequired.UserIdRequired;
 import com.jielim36.devgram.DTO.PostDTO;
+import com.jielim36.devgram.entity.PostEntity;
 import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.common.ResultResponse;
@@ -9,6 +10,7 @@ import com.jielim36.devgram.service.AmazonClient;
 import com.jielim36.devgram.service.LikeService;
 import com.jielim36.devgram.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -109,4 +111,17 @@ public class PostController {
 
         return ResultResponse.success(isSuccess);
     }
+
+    @PutMapping("/{postId}")
+    public ResultResponse updatePost(@PathVariable Long postId,
+                        @RequestBody PostEntity post){
+        post.setId(postId);
+        boolean isSuccess = postService.updatePost(post);
+
+        return isSuccess ?
+                ResultResponse.success(true)
+                :
+                ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Failed to update post.");
+    }
+
 }

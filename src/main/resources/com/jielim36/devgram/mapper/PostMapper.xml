@@ -24,4 +24,8 @@
         DELETE FROM post WHERE id = #{id};
     </delete>
 
+    <update id="updatePost" parameterType="com.jielim36.devgram.entity.PostEntity">
+        UPDATE post SET description = #{description} WHERE id = #{id};
+    </update>
+
 </mapper>
