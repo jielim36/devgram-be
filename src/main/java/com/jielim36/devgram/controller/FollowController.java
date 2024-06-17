@@ -2,6 +2,7 @@ package com.jielim36.devgram.controller;
 
 import com.jielim36.devgram.DTO.UserDTO;
 import com.jielim36.devgram.common.ResultResponse;
+import com.jielim36.devgram.entity.FollowEntity;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.service.FollowService;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,10 @@ public class FollowController {
     }
 
     @PostMapping
-    public ResultResponse addFollow(Long follower_id, Long following_id) {
+    public ResultResponse addFollow(@RequestBody FollowEntity follow){
+        Long follower_id = follow.getFollower_id();
+        Long following_id = follow.getFollowing_id();
+        System.out.println("follower_id: " + follower_id + ", following_id: " + following_id);
         boolean isSuccess = followService.addFollow(follower_id, following_id);
 
         if(isSuccess) {
