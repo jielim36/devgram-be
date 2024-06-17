@@ -33,7 +33,9 @@ public class FollowController {
     }
 
     @PutMapping
-    public ResultResponse unfollow(Long follower_id, Long following_id) {
+    public ResultResponse unfollow(@RequestBody FollowEntity follow) {
+        Long follower_id = follow.getFollower_id();
+        Long following_id = follow.getFollowing_id();
         boolean unfollow = followService.unfollow(follower_id, following_id);
 
         if(unfollow) {
