@@ -5,6 +5,7 @@ import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.entity.FollowEntity;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.service.FollowService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,8 @@ public class FollowController {
     }
 
     @GetMapping("/{follower_id}/following")
-    public ResultResponse getFollowingByUserId(@PathVariable("follower_id")Long follower_id, Integer pages) {
+    public ResultResponse getFollowingByUserId(@PathVariable("follower_id")Long follower_id, @Param("pages") Integer pages) {
+        System.out.println(pages);
         UserDTO[] followingByUserId = followService.getFollowingByUserId(follower_id, pages);
 
         return ResultResponse.success(followingByUserId);

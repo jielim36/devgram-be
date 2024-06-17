@@ -27,26 +27,18 @@
 
     <select id="getFollowingByUserId" resultMap="UserDTOResultMap">
         SELECT
-            u.id,
-            u.username,
-            u.avatar_url,
-            CASE
-                WHEN f.follower_id IS NULL THEN FALSE
-                ELSE TRUE
-            END AS is_following
-        FROM
-            user u
-        LEFT JOIN
-            follow f ON u.id = f.following_id
-        AND
-            f.follower_id = #{follower_id}
-        WHERE
-            u.id = #{following_id}
-        AND
-            u.is_deleted = FALSE
-        ORDER BY
-            f.updated_at DESC
-        LIMIT #{pages}, #{limit}
+            id,
+            username,
+            avatar_url,
+            true is_following
+        FROM `user`
+        WHERE id IN (
+            SELECT following_id
+            FROM `follow`
+            WHERE follower_id = #{follower_id}
+        )
+        ORDER BY updated_at DESC
+        LIMIT #{pages},#{limit};
     </select>
 
     <select id="getFollowerByUserId" resultMap="UserDTOResultMap">
@@ -55,22 +47,15 @@
             u.username,
             u.avatar_url,
             CASE
-                WHEN f.following_id IS NULL THEN FALSE
-                ELSE TRUE
+            WHEN f2.follower_id IS NOT NULL THEN TRUE
+            ELSE FALSE
             END AS is_following
-        FROM
-            user u
-        LEFT JOIN
-            follow f ON u.id = f.follower_id
-        AND
-            f.following_id = #{following_id}
-        WHERE
-            u.id = #{follower_id}
-        AND
-            u.is_deleted = FALSE
-        ORDER BY
-            f.updated_at DESC
-        LIMIT #{pages}, #{limit}
+        FROM `user` u
+        JOIN `follow` f1 ON u.id = f1.follower_id AND f1.is_deleted = FALSE
+        LEFT JOIN `follow` f2 ON u.id = f2.following_id AND f2.follower_id = #{following_id} AND f2.is_deleted = FALSE
+        WHERE f1.following_id = #{following_id} AND u.is_active = TRUE
+        ORDER BY f1.updated_at DESC
+        LIMIT #{pages}, #{limit};
     </select>
 
     <select id="isFollowing" resultType="boolean">
