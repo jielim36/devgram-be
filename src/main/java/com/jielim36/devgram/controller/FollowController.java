@@ -22,7 +22,6 @@ public class FollowController {
     public ResultResponse addFollow(@RequestBody FollowEntity follow){
         Long follower_id = follow.getFollower_id();
         Long following_id = follow.getFollowing_id();
-        System.out.println("follower_id: " + follower_id + ", following_id: " + following_id);
         boolean isSuccess = followService.addFollow(follower_id, following_id);
 
         if(isSuccess) {
@@ -52,28 +51,28 @@ public class FollowController {
         return ResultResponse.success(isFollowing);
     }
 
-    @GetMapping("/following")
-    public ResultResponse getFollowingByUserId(Long follower_id, Integer pages) {
+    @GetMapping("/{follower_id}/following")
+    public ResultResponse getFollowingByUserId(@PathVariable("follower_id")Long follower_id, Integer pages) {
         UserDTO[] followingByUserId = followService.getFollowingByUserId(follower_id, pages);
 
         return ResultResponse.success(followingByUserId);
     }
 
-    @GetMapping("/follower")
-    public ResultResponse getFollowerByUserId(Long following_id, Integer pages) {
+    @GetMapping("/{following_id}/follower")
+    public ResultResponse getFollowerByUserId(@PathVariable("following_id") Long following_id, Integer pages) {
         UserDTO[] followerByUserId = followService.getFollowerByUserId(following_id, pages);
 
         return ResultResponse.success(followerByUserId);
     }
 
-    @GetMapping("/following/count")
-    public ResultResponse getFollowingCount(Long follower_id) {
+    @GetMapping("/{follower_id}/following/count")
+    public ResultResponse getFollowingCount(@PathVariable("follower_id") Long follower_id) {
         int followingCount = followService.getFollowingCount(follower_id);
         return ResultResponse.success(followingCount);
     }
 
-    @GetMapping("/follower/count")
-    public ResultResponse getFollowerCount(Long following_id) {
+    @GetMapping("/{following_id}/follower/count")
+    public ResultResponse getFollowerCount(@PathVariable("following_id") Long following_id) {
         int followerCount = followService.getFollowerCount(following_id);
         return ResultResponse.success(followerCount);
     }

@@ -86,7 +86,7 @@
             is_deleted = FALSE
     </select>
 
-    <select id="getFollowingCount" resultType="int">
+    <select id="getFollowerCount" resultType="int">
         SELECT
             COUNT(*)
         FROM
@@ -97,7 +97,7 @@
             is_deleted = FALSE
     </select>
 
-    <select id="getFollowerCount" resultType="int">
+    <select id="getFollowingCount" resultType="int">
         SELECT
             COUNT(*)
         FROM
