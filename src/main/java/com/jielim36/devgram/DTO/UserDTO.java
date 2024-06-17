@@ -15,6 +15,7 @@ public class UserDTO {
     private String email;
     private String avatar_url;
     private boolean is_active;
+    private boolean is_following;
     private String created_at;
     private String updated_at;
     private StoryEntity[] stories;
@@ -137,6 +138,14 @@ public class UserDTO {
 
     public void setStories(StoryEntity[] stories) {
         this.stories = stories;
+    }
+
+    public boolean isIs_following() {
+        return is_following;
+    }
+
+    public void setIs_following(boolean is_following) {
+        this.is_following = is_following;
     }
 
     @Override
