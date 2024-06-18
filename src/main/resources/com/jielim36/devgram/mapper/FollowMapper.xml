@@ -36,6 +36,7 @@
             SELECT following_id
             FROM `follow`
             WHERE follower_id = #{follower_id}
+            AND is_deleted = FALSE
         )
         ORDER BY updated_at DESC
         LIMIT #{pages},#{limit};
