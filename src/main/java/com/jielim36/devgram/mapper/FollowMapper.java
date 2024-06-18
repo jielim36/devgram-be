@@ -13,9 +13,9 @@ public interface FollowMapper {
 
     boolean isFollowing(FollowEntity follow);
 
-    UserDTO[] getFollowingByUserId(Long follower_id, Integer pages, Integer limit);
+    UserDTO[] getFollowingByUserId(Long follower_id, Integer offset, Integer limit, Long userId);
 
-    UserDTO[] getFollowerByUserId(Long following_id, Integer pages, Integer limit);
+    UserDTO[] getFollowerByUserId(Long following_id, Integer offset, Integer limit, Long userId);
 
     int getFollowingCount(Long follower_id);
 

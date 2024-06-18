@@ -1,10 +1,12 @@
 package com.jielim36.devgram.controller;
 
+import com.jielim36.devgram.CustomAnnotation.UserIdRequired.UserIdRequired;
 import com.jielim36.devgram.DTO.UserDTO;
 import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.entity.FollowEntity;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.service.FollowService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -52,17 +54,24 @@ public class FollowController {
         return ResultResponse.success(isFollowing);
     }
 
+    @UserIdRequired
     @GetMapping("/{follower_id}/following")
-    public ResultResponse getFollowingByUserId(@PathVariable("follower_id")Long follower_id, @Param("pages") Integer pages) {
-        System.out.println(pages);
-        UserDTO[] followingByUserId = followService.getFollowingByUserId(follower_id, pages);
+    public ResultResponse getFollowingByUserId(@PathVariable("follower_id")Long follower_id,
+                                               @Param("pages") Integer pages,
+                                               HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        UserDTO[] followingByUserId = followService.getFollowingByUserId(follower_id, pages, userId);
 
         return ResultResponse.success(followingByUserId);
     }
 
+    @UserIdRequired
     @GetMapping("/{following_id}/follower")
-    public ResultResponse getFollowerByUserId(@PathVariable("following_id") Long following_id, Integer pages) {
-        UserDTO[] followerByUserId = followService.getFollowerByUserId(following_id, pages);
+    public ResultResponse getFollowerByUserId(@PathVariable("following_id") Long following_id,
+                                              @Param("pages") Integer pages,
+                                              HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        UserDTO[] followerByUserId = followService.getFollowerByUserId(following_id, pages, userId);
 
         return ResultResponse.success(followerByUserId);
     }

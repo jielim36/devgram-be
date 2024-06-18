@@ -55,10 +55,13 @@ public class FollowService {
     /**
      * Get the user who is following another user
      * @param follower_id user who is following others
+     * @Param pages page number
+     * @Param userId client user id, use for checking if the client user is following the user in the list
      * @return return following list of the user
      */
-    public UserDTO[] getFollowingByUserId(Long follower_id, Integer pages) {
-        return followMapper.getFollowingByUserId(follower_id, pages, pageLimit);
+    public UserDTO[] getFollowingByUserId(Long follower_id, Integer pages, Long userId) {
+        int offset = (pages - 1) * pageLimit;
+        return followMapper.getFollowingByUserId(follower_id, offset, pageLimit, userId);
     }
 
     /**
@@ -66,8 +69,9 @@ public class FollowService {
      * @param following_id user got followed
      * @return return follower(fans) list of the user
      */
-    public UserDTO[] getFollowerByUserId(Long following_id, Integer pages) {
-        return followMapper.getFollowerByUserId(following_id, pages, pageLimit);
+    public UserDTO[] getFollowerByUserId(Long following_id, Integer pages, Long userId) {
+        int offset = (pages - 1) * pageLimit;
+        return followMapper.getFollowerByUserId(following_id, offset, pageLimit, userId);
     }
 
     /**
