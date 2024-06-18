@@ -1,4 +1,4 @@
-package com.jielim36.devgram.handler;
+package com.jielim36.devgram.exceptionHandler;
 
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.common.ResultResponse;
