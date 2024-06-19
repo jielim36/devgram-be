@@ -4,6 +4,7 @@ import com.jielim36.devgram.DTO.CommentDTO;
 import com.jielim36.devgram.DTO.LikeDTO;
 import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.entity.LikeEntity;
+import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.mapper.AuthMapper;
 import com.jielim36.devgram.mapper.CommentMapper;
@@ -12,6 +13,7 @@ import com.jielim36.devgram.mapper.UserMapper;
 import com.jielim36.devgram.service.AuthService;
 import com.jielim36.devgram.service.LikeService;
 import com.jielim36.devgram.service.PostService;
+import com.jielim36.devgram.service.UserInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +40,9 @@ class DevgramApplicationTests {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     private final Long userId = 1001L;
 
@@ -128,5 +133,23 @@ class DevgramApplicationTests {
     @Test
     void deletePostByPostId() {
         System.out.println(postService.deletePostByPostId(11L));
+    }
+
+    @Test
+    void getUserInfoByUserId() {
+        UserInfoEntity userInfo = userInfoService.getUserInfo(userId);
+        System.out.println(userInfo);
+    }
+
+    @Test
+    void updateUserInfo() {
+        String newBio = "Hi, my name is Lim Yee Jie! \n This is my new bio! \n\n\n" +
+                "This is my new youtube link: www.youtube.com";
+
+        UserInfoEntity userInfo = new UserInfoEntity();
+        userInfo.setUser_id(userId);
+        userInfo.setBio(newBio);
+
+        userInfoService.updateUserInfo(userInfo);
     }
 }

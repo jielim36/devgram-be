@@ -1,19 +1,23 @@
 package com.jielim36.devgram.service;
 
+import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.OAuthProviderEnum;
 import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.AuthMapper;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
 
     private final AuthMapper authMapper;
+    private final UserInfoService userInfoService;
 
-    public AuthService(AuthMapper authMapper) {
+    public AuthService(AuthMapper authMapper, UserInfoService userInfoService) {
         this.authMapper = authMapper;
+        this.userInfoService = userInfoService;
     }
 
     public boolean checkUserExists(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
@@ -35,6 +39,7 @@ public class AuthService {
         return authMapper.selectUserByGoogleId(google_id) != null;
     }
 
+    @Transactional
     public void register(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
         if (OAuthProviderEnum.GITHUB.getProviderName().equals(providerId)) {
             register_github(userPrincipal);
@@ -44,21 +49,19 @@ public class AuthService {
     }
 
     public void register_github(OAuth2AuthenticatedPrincipal principal) {
-//        User user = new User();
-//        user.setGithub_id(principal.getAttribute("id"));
-//        user.setUsername(principal.getAttribute("login"));
-//        user.setAvatar_url(principal.getAttribute("avatar_url"));
-        // GitHub account would not return email
-//        user.setEmail(principal.getAttribute("email"));
         UserEntity user = OAuthUserConvert.convertGithubUser(principal);
+        UserInfoEntity userInfo = new UserInfoEntity( user.getId(), null, null, null, null);
 
         authMapper.insertGithubUser(user);
+        userInfoService.addUserInfo(userInfo);
     }
 
     public void register_google(OAuth2AuthenticatedPrincipal principal) {
         UserEntity user = OAuthUserConvert.convertGoogleUser(principal);
+        UserInfoEntity userInfo = new UserInfoEntity( user.getId(), null, null, null, null);
 
         authMapper.insertGoogleUser(user);
+        userInfoService.addUserInfo(userInfo);
     }
 
     public Long getUserIdByProviderId(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {

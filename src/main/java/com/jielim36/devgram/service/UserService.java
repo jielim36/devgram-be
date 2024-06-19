@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserMapper userMapper;
+    private final UserInfoService userInfoService;
 
-    public UserService(UserMapper userMapper) {
+    public UserService(UserMapper userMapper, UserInfoService userInfoService) {
         this.userMapper = userMapper;
+        this.userInfoService = userInfoService;
     }
 
     public UserEntity selectUserById(Long id) {
