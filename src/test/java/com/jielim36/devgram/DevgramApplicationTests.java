@@ -143,8 +143,8 @@ class DevgramApplicationTests {
 
     @Test
     void updateUserInfo() {
-        String newBio = "Hi, my name is Lim Yee Jie! \n This is my new bio! \n\n\n" +
-                "This is my new youtube link: www.youtube.com";
+        String newBio = "Hi, my name is Lim Yee Jie! <br> This is my new bio! \n\n\n" +
+                "This is my new youtube link: https://www.youtube.com/";
 
         UserInfoEntity userInfo = new UserInfoEntity();
         userInfo.setUser_id(userId);
