@@ -32,12 +32,18 @@ public class UserInfoService {
             }
         }
 
-        int affectedRows = userInfoMapper.updateUserInfo(userInfoEntity);
-        if(affectedRows == 0) {
-            throw new RuntimeException("Failed to update user info");
+        UserInfoEntity userInfo = getUserInfo(userInfoEntity.getUser_id());
+        if(userInfo == null) {
+            addUserInfo(userInfoEntity);
+        } else {
+            int affectedRows = userInfoMapper.updateUserInfo(userInfoEntity);
+            if(affectedRows == 0) {
+                throw new RuntimeException("Failed to update user info");
+            }
+            return affectedRows > 0;
         }
 
-        return affectedRows > 0;
+        return false;
     }
 
     public UserInfoEntity getUserInfo(Long userId) {
