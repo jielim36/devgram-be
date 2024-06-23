@@ -1,15 +1,13 @@
 package com.jielim36.devgram.controller;
 
 import com.jielim36.devgram.CustomAnnotation.UserIdRequired.UserIdRequired;
+import com.jielim36.devgram.DTO.request.UpdateUserInfoRequest;
 import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.service.UserInfoService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -30,6 +28,12 @@ public class UserInfoController {
         }
 
         return ResultResponse.success(userInfo);
+    }
+
+    @PutMapping("/{userId}/info")
+    public ResultResponse updateUserInfo(@PathVariable Long userId, @RequestBody UpdateUserInfoRequest updateUserInfoRequest) {
+        boolean isSuccess = userInfoService.updateUserInfo(updateUserInfoRequest);
+        return isSuccess ? ResultResponse.success(true) : ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR,"Update failed");
     }
 
 }

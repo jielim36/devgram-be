@@ -8,7 +8,7 @@ public interface UserInfoMapper {
 
     void addUserInfo(UserInfoEntity userInfoEntity);
 
-    void updateUserInfo(UserInfoEntity userInfoEntity);
+    int updateUserInfo(UserInfoEntity userInfoEntity);
 
     UserInfoEntity selectUserInfoByUserId(Long user_id);
 

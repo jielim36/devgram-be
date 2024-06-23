@@ -18,4 +18,13 @@
     <select id="selectUserByGoogleId" resultType="com.jielim36.devgram.entity.UserEntity">
         SELECT * FROM user WHERE google_id = #{google_id}
     </select>
+
+    <update id="updateUsername" parameterType="com.jielim36.devgram.entity.UserEntity">
+        UPDATE user
+        <set>
+            <if test="username != null">username = #{username},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
 </mapper>

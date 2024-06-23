@@ -46,4 +46,9 @@ public class UserService {
         return user;
     }
 
+    public boolean updateUsername(Long id, String username) {
+        int affectedRows = userMapper.updateUsername(id, username);
+        return affectedRows > 0;
+    }
+
 }

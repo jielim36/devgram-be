@@ -14,4 +14,6 @@ public interface UserMapper {
 
     UserEntity selectUserByGoogleId(String google_id);
 
+    int updateUsername(Long id, String username);
+
 }
