@@ -10,6 +10,12 @@ public interface PostMapper {
 
     PostEntity[] getPopularPosts();
 
+    PostEntity[] getPopularPostsWithPagination(int offset, int limit);
+
+    PostEntity[] getFollowingPosts(Long user_id);
+
+    PostEntity[] getFollowingPostsWithPagination(Long user_id, int offset, int limit);
+
     PostEntity getPostByPostId(Long id);
 
     PostEntity[] getPostsByUserId(Long user_id);

@@ -48,6 +48,43 @@ public class PostController {
         return success;
     }
 
+    @GetMapping("/user/{userId}/following")
+    public ResultResponse<PostDTO[]> getFollowingPosts(@PathVariable Long userId) {
+        PostDTO[] followingPosts = postService.getFollowingPosts(userId);
+
+        if(followingPosts == null || followingPosts.length == 0 || followingPosts[0] == null) {
+            return ResultResponse.failure(ResultCode.NOT_FOUND, "No following posts found.");
+        }
+
+        return ResultResponse.success(followingPosts);
+    }
+
+    @UserIdRequired
+    @GetMapping("/popular/page/{pages}")
+    public ResultResponse<PostDTO[]> getPopularPostsWithPagination(@PathVariable Integer pages, HttpServletRequest request) {
+        Long user_id = (Long) request.getAttribute("userId");
+
+        PostDTO[] popularPosts = postService.getPopularPostsWithPagination(user_id, pages);
+
+        if(popularPosts == null || popularPosts.length == 0 || popularPosts[0] == null) {
+            return ResultResponse.failure(ResultCode.NOT_FOUND, "No popular posts found.");
+        }
+
+        ResultResponse success = ResultResponse.success(popularPosts);
+        return success;
+    }
+
+    @GetMapping("/user/{userId}/following/page/{pages}")
+    public ResultResponse<PostDTO[]> getFollowingPostsWithPagination(@PathVariable Long userId, @PathVariable Integer pages) {
+        PostDTO[] followingPosts = postService.getFollowingPostsWithPagination(userId, pages);
+
+        if(followingPosts == null || followingPosts.length == 0 || followingPosts[0] == null) {
+            return ResultResponse.failure(ResultCode.NOT_FOUND, "No following posts found.");
+        }
+
+        return ResultResponse.success(followingPosts);
+    }
+
     @UserIdRequired
     @PostMapping
     public ResultResponse<Boolean> addPost(@RequestPart(value = "files") MultipartFile[] files,

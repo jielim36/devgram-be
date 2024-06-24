@@ -22,6 +22,7 @@ public class PostService {
     private final PostImagesService postImagesService;
     private final CommentService commentService;
     private final LikeService likeService;
+    private final Integer pageLimit = 5;
 
     public PostService(AmazonClient amazonClient,
                        PostMapper postMapper,
@@ -39,28 +40,40 @@ public class PostService {
         this.likeService = likeService;
     }
 
+    @Transactional
     public boolean addPost(MultipartFile[] files, String description, Long userId) {
         PostEntity post = new PostEntity(userId, description);
         postMapper.addPost(post);
 
         // if post success added in database, it will return post with id
-        if (post == null || post.getId() == null){
-            return false;
+        if (post.getId() == null){
+            throw new RuntimeException("Failed to add post");
         }
 
-        for (int i = 0; i < files.length; i++) {
-            String fileUrl = amazonClient.uploadFile(files[i], "post_" + post.getId() + "_" + i + ".jpg");
-            if (fileUrl == null) {
-                return false;
-            }
+        String[] images_url = new String[files.length];
 
-            // after added image in S3, save the img url in database
-            PostImageEntity postImage = new PostImageEntity(post.getId(), fileUrl, i);
-            postImagesMapper.addPostImage(postImage);
-            if (postImage.getId() == null) {
-                amazonClient.deleteFileFromS3Bucket(fileUrl);
-                return false;
+        try {
+            for (int i = 0; i < files.length; i++) {
+                String fileUrl = amazonClient.uploadFile(files[i], "post_" + post.getId() + "_" + i + ".jpg");
+                images_url[i] = fileUrl;
+                if (fileUrl == null) {
+                    throw new RuntimeException("Failed to upload image");
+                }
+
+                // after added image in S3, save the img url in database
+                PostImageEntity postImage = new PostImageEntity(post.getId(), fileUrl, i);
+                postImagesMapper.addPostImage(postImage);
+                if (postImage.getId() == null) {
+                    throw new RuntimeException("Failed to add post image");
+                }
             }
+        } catch (Exception e) {
+            for (int i = 0; i < images_url.length; i++) {
+                if(images_url[i] != null){
+                    amazonClient.deleteFileFromS3Bucket(images_url[i]);
+                }
+            }
+            throw new RuntimeException("Failed to upload image");
         }
 
         return true;
@@ -102,6 +115,50 @@ public class PostService {
         }
 
         return popularPostsDTO;
+    }
+
+    public PostDTO[] getPopularPostsWithPagination(Long user_id, Integer pages) {
+        int offset = (pages - 1) * pageLimit;
+        PostEntity[] popularPosts = postMapper.getPopularPostsWithPagination(offset, pageLimit);
+        if (popularPosts == null) {
+            return null;
+        }
+
+        PostDTO[] popularPostsDTO = new PostDTO[popularPosts.length];
+        for (int i = 0; i < popularPosts.length; i++) {
+            popularPostsDTO[i] = getPostDTOByPostEntity(popularPosts[i],user_id);
+        }
+
+        return popularPostsDTO;
+    }
+
+    public PostDTO[] getFollowingPosts(Long userId) {
+        PostEntity[] followingPosts = postMapper.getFollowingPosts(userId);
+        if (followingPosts == null) {
+            return null;
+        }
+
+        PostDTO[] followingPostsDTO = new PostDTO[followingPosts.length];
+        for (int i = 0; i < followingPosts.length; i++) {
+            followingPostsDTO[i] = getPostDTOByPostEntity(followingPosts[i], userId);
+        }
+
+        return followingPostsDTO;
+    }
+
+    public PostDTO[] getFollowingPostsWithPagination(Long userId, Integer pages) {
+        int offset = (pages - 1) * pageLimit;
+        PostEntity[] followingPosts = postMapper.getFollowingPostsWithPagination(userId, offset, pageLimit);
+        if (followingPosts == null) {
+            return null;
+        }
+
+        PostDTO[] followingPostsDTO = new PostDTO[followingPosts.length];
+        for (int i = 0; i < followingPosts.length; i++) {
+            followingPostsDTO[i] = getPostDTOByPostEntity(followingPosts[i], userId);
+        }
+
+        return followingPostsDTO;
     }
 
     public PostDTO[] getPostsByUserId(Long userId) {

@@ -7,9 +7,48 @@
         INSERT INTO post (user_id, description) VALUES (#{user_id}, #{description})
     </insert>
 
-    <!--    TODO: implement popular algorithms such as depend on likes -->
     <select id="getPopularPosts" resultType="com.jielim36.devgram.entity.PostEntity">
-        SELECT * FROM post ORDER BY created_at DESC;
+        SELECT
+            p.*
+        FROM
+            post p
+        LEFT JOIN
+            `like` l
+        ON
+            p.id = l.parent_id AND l.type = 'post' AND l.is_deleted = FALSE
+        GROUP BY
+            p.id, p.user_id, p.description, p.created_at, p.updated_at
+        ORDER BY
+            COUNT(l.id) DESC;
+    </select>
+
+    <select id="getPopularPostsWithPagination" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT
+        p.*
+        FROM
+        post p
+        LEFT JOIN
+        `like` l
+        ON
+        p.id = l.parent_id AND l.type = 'post' AND l.is_deleted = FALSE
+        GROUP BY
+        p.id, p.user_id, p.description, p.created_at, p.updated_at
+        ORDER BY
+        COUNT(l.id) DESC
+        LIMIT #{offset}, #{limit};
+    </select>
+
+    <select id="getFollowingPosts" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT * FROM post
+            WHERE user_id IN (SELECT following_id FROM follow WHERE follower_id = #{user_id})
+            ORDER BY created_at DESC;
+    </select>
+
+    <select id="getFollowingPostsWithPagination" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT * FROM post
+        WHERE user_id IN (SELECT following_id FROM follow WHERE follower_id = #{user_id})
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{limit};
     </select>
 
     <select id="getPostByPostId" resultType="com.jielim36.devgram.entity.PostEntity">
