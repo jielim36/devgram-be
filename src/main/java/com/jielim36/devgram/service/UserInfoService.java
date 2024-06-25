@@ -18,8 +18,10 @@ public class UserInfoService {
         this.userService = userService;
     }
 
-    public void addUserInfo(UserInfoEntity userInfoEntity) {
-        userInfoMapper.addUserInfo(userInfoEntity);
+    public boolean addUserInfo(UserInfoEntity userInfoEntity) {
+        int affectedRows = userInfoMapper.addUserInfo(userInfoEntity);
+
+        return affectedRows > 0;
     }
 
     @Transactional

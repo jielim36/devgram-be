@@ -4,16 +4,15 @@ import com.jielim36.devgram.DTO.CommentDTO;
 import com.jielim36.devgram.DTO.LikeDTO;
 import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.entity.LikeEntity;
+import com.jielim36.devgram.entity.PrivacySettingsEntity;
 import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.LikeTypeEnum;
+import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
 import com.jielim36.devgram.mapper.AuthMapper;
 import com.jielim36.devgram.mapper.CommentMapper;
 import com.jielim36.devgram.mapper.LikeMapper;
 import com.jielim36.devgram.mapper.UserMapper;
-import com.jielim36.devgram.service.AuthService;
-import com.jielim36.devgram.service.LikeService;
-import com.jielim36.devgram.service.PostService;
-import com.jielim36.devgram.service.UserInfoService;
+import com.jielim36.devgram.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +42,9 @@ class DevgramApplicationTests {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private PrivacySettingsService privacySettingsService;
 
     private final Long userId = 1001L;
 
@@ -151,5 +153,43 @@ class DevgramApplicationTests {
         userInfo.setBio(newBio);
 
 //        userInfoService.updateUserInfo(userInfo);
+    }
+
+    @Test
+    void testAddPrivacySetting() {
+        PrivacySettingsEntity privacySettings =new PrivacySettingsEntity(
+                null,
+                userId,
+                true,
+                true,
+                true,
+                PostVisibilityDurationEnum.FOREVER,
+                PostVisibilityDurationEnum.FOREVER,
+                PostVisibilityDurationEnum.FOREVER
+        );
+        int isSuccess = privacySettingsService.insertPrivacySetting(privacySettings);
+        System.out.println(isSuccess);
+    }
+
+    @Test
+    void testSelectPrivacySettingByUserId() {
+        PrivacySettingsEntity privacySettingsEntity = privacySettingsService.selectPrivacySettingByUserId(userId);
+        System.out.println(privacySettingsEntity);
+    }
+
+    @Test
+    void testUpdatePrivacySetting() {
+        PrivacySettingsEntity privacySettings =new PrivacySettingsEntity(
+                null,
+                userId,
+                false,
+                false,
+                true,
+                PostVisibilityDurationEnum.FOREVER,
+                PostVisibilityDurationEnum.THIRTY_DAYS,
+                PostVisibilityDurationEnum.ONE_DAY
+        );
+        int isSuccess = privacySettingsService.updatePrivacySetting(privacySettings);
+        System.out.println(isSuccess);
     }
 }

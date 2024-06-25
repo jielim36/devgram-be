@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jielim36.devgram.mapper.PrivacySettingsMapper">
+
+    <resultMap id="PrivacySettingResultMap" type="com.jielim36.devgram.entity.PrivacySettingsEntity">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="canSeePostFollower" column="can_see_post_follower"/>
+        <result property="canSeePostFollowing" column="can_see_post_following"/>
+        <result property="canSeePostFriend" column="can_see_post_friend"/>
+        <result property="postVisibilityDurationFollower"
+                column="post_visibility_duration_follower"
+                javaType="com.jielim36.devgram.enums.PostVisibilityDurationEnum"
+                jdbcType="INTEGER"
+                typeHandler="com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler"
+        />
+        <result property="postVisibilityDurationFollowing"
+                column="post_visibility_duration_following"
+                javaType="com.jielim36.devgram.enums.PostVisibilityDurationEnum"
+                jdbcType="INTEGER"
+                typeHandler="com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler"
+        />
+        <result property="postVisibilityDurationFriend"
+                column="post_visibility_duration_friend"
+                javaType="com.jielim36.devgram.enums.PostVisibilityDurationEnum"
+                jdbcType="INTEGER"
+                typeHandler="com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler"
+        />
+    </resultMap>
+
+    <insert id="insertPrivacySetting" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO privacy_setting (
+            user_id,
+            can_see_post_follower,
+            can_see_post_following,
+            can_see_post_friend,
+            post_visibility_duration_follower,
+            post_visibility_duration_following,
+            post_visibility_duration_friend
+        ) VALUES (
+            #{userId},
+            #{canSeePostFollower},
+            #{canSeePostFollowing},
+            #{canSeePostFriend},
+            #{postVisibilityDurationFollower,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
+            #{postVisibilityDurationFollowing,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
+            #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
+        )
+    </insert>
+
+    <select id="selectPrivacySettingByUserId" resultMap="PrivacySettingResultMap">
+        SELECT *
+        FROM privacy_setting
+        WHERE user_id = #{userId}
+    </select>
+
+    <update id="updatePrivacySettingByUserId" parameterType="com.jielim36.devgram.entity.PrivacySettingsEntity">
+        UPDATE privacy_setting
+        SET
+            can_see_post_follower = #{canSeePostFollower},
+            can_see_post_following = #{canSeePostFollowing},
+            can_see_post_friend = #{canSeePostFriend},
+            post_visibility_duration_follower = #{postVisibilityDurationFollower,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
+            post_visibility_duration_following = #{postVisibilityDurationFollowing,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
+            post_visibility_duration_friend = #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
+        WHERE user_id = #{userId}
+    </update>
+</mapper>
