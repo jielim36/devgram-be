@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @SpringBootTest
 class DevgramApplicationTests {
@@ -198,9 +199,10 @@ class DevgramApplicationTests {
 
     @Test
     void testIsAllowedViewProfile() {
-        Long sender = 1006L;
-        Long targetUserId = userId;
-        boolean isAllowed = privacySettingsService.isAllowedToViewPost(sender, targetUserId);
-        System.out.println(isAllowed);
+        Long sender = userId;
+        Long targetUserId = 1002L;
+
+        Date postVisibilityDuration = privacySettingsService.getPostVisibilityDuration(sender, targetUserId);
+        System.out.println(postVisibilityDuration);
     }
 }

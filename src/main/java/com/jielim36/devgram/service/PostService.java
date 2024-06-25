@@ -6,11 +6,14 @@ import com.jielim36.devgram.DTO.PostDTO;
 import com.jielim36.devgram.entity.PostEntity;
 import com.jielim36.devgram.entity.PostImageEntity;
 import com.jielim36.devgram.entity.UserEntity;
+import com.jielim36.devgram.enums.FollowRelation;
 import com.jielim36.devgram.mapper.PostImagesMapper;
 import com.jielim36.devgram.mapper.PostMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
 
 @Service
 public class PostService {
@@ -166,12 +169,9 @@ public class PostService {
     }
 
     public PostDTO[] getPostsByUserId(Long userId, Long ownUserId) {
-        boolean allowedToViewPost = privacySettingsService.isAllowedToViewPost(ownUserId, userId);
-        if(!allowedToViewPost) {
-            throw new RuntimeException("Not allowed to access this profile");
-        }
+        Date postVisibilityDuration = privacySettingsService.getPostVisibilityDuration(ownUserId, userId);
 
-        PostEntity[] postsByUserId = postMapper.getPostsByUserId(userId);
+        PostEntity[] postsByUserId = postMapper.getPostsByUserId(userId, postVisibilityDuration);
         if (postsByUserId == null) {
             return null;
         }

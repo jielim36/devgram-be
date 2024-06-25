@@ -3,6 +3,8 @@ package com.jielim36.devgram.mapper;
 import com.jielim36.devgram.entity.PostEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
+
 @Mapper
 public interface PostMapper {
 
@@ -18,7 +20,7 @@ public interface PostMapper {
 
     PostEntity getPostByPostId(Long id);
 
-    PostEntity[] getPostsByUserId(Long user_id);
+    PostEntity[] getPostsByUserId(Long user_id, Date startDate);
 
     boolean deletePostByPostId(Long id);
 
