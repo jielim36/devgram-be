@@ -1,7 +1,9 @@
 package com.jielim36.devgram.service;
 
+import com.jielim36.devgram.entity.PrivacySettingsEntity;
 import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.OAuthProviderEnum;
+import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
 import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.AuthMapper;
@@ -14,10 +16,14 @@ public class AuthService {
 
     private final AuthMapper authMapper;
     private final UserInfoService userInfoService;
+    private final PrivacySettingsService privacySettingsService;
 
-    public AuthService(AuthMapper authMapper, UserInfoService userInfoService) {
+    public AuthService(AuthMapper authMapper,
+                       UserInfoService userInfoService,
+                       PrivacySettingsService privacySettingsService) {
         this.authMapper = authMapper;
         this.userInfoService = userInfoService;
+        this.privacySettingsService = privacySettingsService;
     }
 
     public boolean checkUserExists(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
@@ -48,20 +54,19 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public void register_github(OAuth2AuthenticatedPrincipal principal) {
         UserEntity user = OAuthUserConvert.convertGithubUser(principal);
-        UserInfoEntity userInfo = new UserInfoEntity( user.getId(), null, null, null, null);
-
         authMapper.insertGithubUser(user);
-        userInfoService.addUserInfo(userInfo);
+        initUserData(user.getId());
     }
 
+    @Transactional
     public void register_google(OAuth2AuthenticatedPrincipal principal) {
         UserEntity user = OAuthUserConvert.convertGoogleUser(principal);
-        UserInfoEntity userInfo = new UserInfoEntity( user.getId(), null, null, null, null);
-
         authMapper.insertGoogleUser(user);
-        userInfoService.addUserInfo(userInfo);
+
+        initUserData(user.getId());
     }
 
     public Long getUserIdByProviderId(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
@@ -80,6 +85,37 @@ public class AuthService {
 
     public Long getUserIdByGoogleId(String google_id) {
         return authMapper.getUserIdByGoogleId(google_id);
+    }
+
+    public void initUserData(Long userId) {
+        try{
+            // create user info data
+            UserInfoEntity userInfo = new UserInfoEntity( userId, null, null, null, null);
+            boolean isAddedUserInfo = userInfoService.addUserInfo(userInfo);
+            if(!isAddedUserInfo) {
+                throw new RuntimeException("Failed to initialize user info");
+            }
+
+            // create privacy settings data
+            PrivacySettingsEntity privacySettings =new PrivacySettingsEntity(
+                                                        null,
+                                                        userId,
+                                                        true,
+                                                        true,
+                                                        true,
+                                                        PostVisibilityDurationEnum.FOREVER,
+                                                        PostVisibilityDurationEnum.FOREVER,
+                                                        PostVisibilityDurationEnum.FOREVER
+            );
+            int affectedRows = privacySettingsService.insertPrivacySetting(privacySettings);
+            if (affectedRows == 0) {
+                throw new RuntimeException("Failed to initialize privacy settings");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize user data");
+        }
+
     }
 
 }

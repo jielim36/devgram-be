@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserInfoMapper {
 
-    void addUserInfo(UserInfoEntity userInfoEntity);
+    int addUserInfo(UserInfoEntity userInfoEntity);
 
     int updateUserInfo(UserInfoEntity userInfoEntity);
 
