@@ -1,5 +1,8 @@
 package com.jielim36.devgram.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.JsonSerializer;
+
 public enum PostVisibilityDurationEnum {
     ONE_DAY(1),
     THREE_DAYS(3),
@@ -9,6 +12,7 @@ public enum PostVisibilityDurationEnum {
     NINETY_DAYS(90),
     FOREVER(0);
 
+    @JsonValue
     private final int duration;
 
     PostVisibilityDurationEnum(int duration) {
@@ -27,4 +31,5 @@ public enum PostVisibilityDurationEnum {
         }
         throw new IllegalArgumentException("Unknown duration: " + duration);
     }
+
 }
