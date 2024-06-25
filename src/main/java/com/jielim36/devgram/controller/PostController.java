@@ -132,9 +132,11 @@ public class PostController {
         return ResultResponse.success(post);
     }
 
+    @UserIdRequired
     @GetMapping("/user/{user_id}")
-    public ResultResponse<PostDTO[]> getPostsByUserId(@PathVariable Long user_id) {
-        PostDTO[] postsByUserId = postService.getPostsByUserId(user_id);
+    public ResultResponse<PostDTO[]> getPostsByUserId(@PathVariable Long user_id, HttpServletRequest request) {
+        Long ownUserId = (Long) request.getAttribute("userId");
+        PostDTO[] postsByUserId = postService.getPostsByUserId(user_id, ownUserId);
 
         if(postsByUserId == null) {
             return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Fetching posts failed.");

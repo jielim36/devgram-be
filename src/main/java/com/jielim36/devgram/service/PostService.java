@@ -22,6 +22,7 @@ public class PostService {
     private final PostImagesService postImagesService;
     private final CommentService commentService;
     private final LikeService likeService;
+    private final PrivacySettingsService privacySettingsService;
     private final Integer pageLimit = 5;
 
     public PostService(AmazonClient amazonClient,
@@ -30,7 +31,9 @@ public class PostService {
                        UserService userService,
                        PostImagesService postImagesService,
                        CommentService commentService,
-                       LikeService likeService) {
+                       LikeService likeService,
+                       PrivacySettingsService privacySettingsService
+                       ) {
         this.amazonClient = amazonClient;
         this.postMapper = postMapper;
         this.postImagesMapper = postImagesMapper;
@@ -38,6 +41,7 @@ public class PostService {
         this.postImagesService = postImagesService;
         this.commentService = commentService;
         this.likeService = likeService;
+        this.privacySettingsService = privacySettingsService;
     }
 
     @Transactional
@@ -161,7 +165,12 @@ public class PostService {
         return followingPostsDTO;
     }
 
-    public PostDTO[] getPostsByUserId(Long userId) {
+    public PostDTO[] getPostsByUserId(Long userId, Long ownUserId) {
+        boolean allowedToViewPost = privacySettingsService.isAllowedToViewPost(ownUserId, userId);
+        if(!allowedToViewPost) {
+            throw new RuntimeException("Not allowed to access this profile");
+        }
+
         PostEntity[] postsByUserId = postMapper.getPostsByUserId(userId);
         if (postsByUserId == null) {
             return null;

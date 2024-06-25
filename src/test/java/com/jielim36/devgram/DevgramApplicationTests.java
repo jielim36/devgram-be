@@ -8,10 +8,7 @@ import com.jielim36.devgram.entity.PrivacySettingsEntity;
 import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
-import com.jielim36.devgram.mapper.AuthMapper;
-import com.jielim36.devgram.mapper.CommentMapper;
-import com.jielim36.devgram.mapper.LikeMapper;
-import com.jielim36.devgram.mapper.UserMapper;
+import com.jielim36.devgram.mapper.*;
 import com.jielim36.devgram.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,13 @@ class DevgramApplicationTests {
     private UserInfoService userInfoService;
 
     @Autowired
+    private FollowService followService;
+
+    @Autowired
     private PrivacySettingsService privacySettingsService;
+
+    @Autowired
+    private PrivacySettingsMapper privacySettingsMapper;
 
     private final Long userId = 1001L;
 
@@ -122,7 +125,7 @@ class DevgramApplicationTests {
 
     @Test
     void getPostsByUserId() {
-        System.out.println(Arrays.toString(postService.getPostsByUserId(userId)));
+//        System.out.println(Arrays.toString(postService.getPostsByUserId(userId)));
     }
 
     @Test
@@ -191,5 +194,13 @@ class DevgramApplicationTests {
         );
         int isSuccess = privacySettingsService.updatePrivacySetting(privacySettings);
         System.out.println(isSuccess);
+    }
+
+    @Test
+    void testIsAllowedViewProfile() {
+        Long sender = 1006L;
+        Long targetUserId = userId;
+        boolean isAllowed = privacySettingsService.isAllowedToViewPost(sender, targetUserId);
+        System.out.println(isAllowed);
     }
 }

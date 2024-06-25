@@ -41,16 +41,6 @@ public class FollowService {
         return affectedRows > 0;
     }
 
-    /**
-     * Check if a user is following another user
-     * @param follower_id user who is following others
-     * @param following_id  user got followed
-     * @return true if the user is following the other user
-     */
-    public boolean isFollowing(Long follower_id, Long following_id) {
-        FollowEntity follow = new FollowEntity(follower_id, following_id);
-        return followMapper.isFollowing(follow);
-    }
 
     /**
      * Get the user who is following another user
@@ -92,4 +82,14 @@ public class FollowService {
         return followMapper.getFollowerCount(following_id);
     }
 
+    /**
+     * Check if a user is following another user
+     * @param follower_id user who is following others
+     * @param following_id  user got followed
+     * @return true if the user is following the other user
+     */
+    public boolean isFollowing(Long follower_id, Long following_id) {
+        FollowEntity follow = new FollowEntity(follower_id, following_id);
+        return followMapper.isFollowing(follow);
+    }
 }
