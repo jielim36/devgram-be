@@ -26,7 +26,7 @@ public class PrivacySettingController {
     @PutMapping("/{userId}")
     public ResultResponse updatePrivacySettings(@PathVariable Long userId, @RequestBody PrivacySettingsEntity privacySettingsEntity) {
         privacySettingsEntity.setUserId(userId);
-        int result = privacySettingsService.insertPrivacySetting(privacySettingsEntity);
+        int result = privacySettingsService.updatePrivacySetting(privacySettingsEntity);
 
         return result > 0 ? ResultResponse.success(true) : ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR,"Failed to update privacy settings");
     }
