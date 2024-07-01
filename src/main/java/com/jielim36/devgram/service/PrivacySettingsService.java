@@ -55,12 +55,12 @@ public class PrivacySettingsService {
 
         if (allowFriendView && isFriend) {
             return VisibilityTypeEnum.FRIEND;
-        } else if(allowAllView) {
-            return VisibilityTypeEnum.ALL;
         } else if (allowFollowerView && isFollower) {
             return VisibilityTypeEnum.FOLLOWER;
         } else if (allowFollowingView && isFollowing) {
             return VisibilityTypeEnum.FOLLOWING;
+        } else if(allowAllView) {
+            return VisibilityTypeEnum.ALL;
         }
         // step here means not allowed to access
         String entitiy = isFriend ? "friend" : isFollower ? "follower" : "the user got following";
@@ -103,14 +103,14 @@ public class PrivacySettingsService {
             case FRIEND:
                 visibilityTime = privacySettingsEntity.getPostVisibilityDurationFriend().getDuration();
                 break;
-            case ALL:
-                visibilityTime = privacySettingsEntity.getPostVisibilityDurationAll().getDuration();
-                break;
             case FOLLOWER:
                 visibilityTime = privacySettingsEntity.getPostVisibilityDurationFollower().getDuration();
                 break;
             case FOLLOWING:
                 visibilityTime = privacySettingsEntity.getPostVisibilityDurationFollowing().getDuration();
+                break;
+            case ALL:
+                visibilityTime = privacySettingsEntity.getPostVisibilityDurationAll().getDuration();
                 break;
         }
 
