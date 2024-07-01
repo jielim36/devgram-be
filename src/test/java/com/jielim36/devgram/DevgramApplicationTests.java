@@ -163,10 +163,12 @@ class DevgramApplicationTests {
     void testAddPrivacySetting() {
         PrivacySettingsEntity privacySettings =new PrivacySettingsEntity(
                 null,
-                userId,
+                1002L,
                 true,
                 true,
                 true,
+                true,
+                PostVisibilityDurationEnum.FOREVER,
                 PostVisibilityDurationEnum.FOREVER,
                 PostVisibilityDurationEnum.FOREVER,
                 PostVisibilityDurationEnum.FOREVER
@@ -189,9 +191,11 @@ class DevgramApplicationTests {
                 false,
                 false,
                 true,
+                true,
                 PostVisibilityDurationEnum.FOREVER,
                 PostVisibilityDurationEnum.THIRTY_DAYS,
-                PostVisibilityDurationEnum.ONE_DAY
+                PostVisibilityDurationEnum.ONE_DAY,
+                PostVisibilityDurationEnum.FOREVER
         );
         int isSuccess = privacySettingsService.updatePrivacySetting(privacySettings);
         System.out.println(isSuccess);
@@ -202,6 +206,14 @@ class DevgramApplicationTests {
         Long sender = userId;
         Long targetUserId = 1002L;
 
+        Date postVisibilityDuration = privacySettingsService.getPostVisibilityDuration(sender, targetUserId);
+        System.out.println(postVisibilityDuration);
+    }
+
+    @Test
+    void testDate() {
+        Long sender = userId;
+        Long targetUserId = 1002L;
         Date postVisibilityDuration = privacySettingsService.getPostVisibilityDuration(sender, targetUserId);
         System.out.println(postVisibilityDuration);
     }

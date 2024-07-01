@@ -103,6 +103,8 @@ public class AuthService {
                                                         true,
                                                         true,
                                                         true,
+                                                        true,
+                                                        PostVisibilityDurationEnum.FOREVER,
                                                         PostVisibilityDurationEnum.FOREVER,
                                                         PostVisibilityDurationEnum.FOREVER,
                                                         PostVisibilityDurationEnum.FOREVER

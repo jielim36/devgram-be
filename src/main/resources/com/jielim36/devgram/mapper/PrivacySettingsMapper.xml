@@ -10,6 +10,7 @@
         <result property="canSeePostFollower" column="can_see_post_follower"/>
         <result property="canSeePostFollowing" column="can_see_post_following"/>
         <result property="canSeePostFriend" column="can_see_post_friend"/>
+        <result property="canSeePostAll" column="can_see_post_all"/>
         <result property="postVisibilityDurationFollower"
                 column="post_visibility_duration_follower"
                 javaType="com.jielim36.devgram.enums.PostVisibilityDurationEnum"
@@ -28,6 +29,12 @@
                 jdbcType="INTEGER"
                 typeHandler="com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler"
         />
+        <result property="postVisibilityDurationAll"
+                column="post_visibility_duration_all"
+                javaType="com.jielim36.devgram.enums.PostVisibilityDurationEnum"
+                jdbcType="INTEGER"
+                typeHandler="com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler"
+        />
     </resultMap>
 
     <insert id="insertPrivacySetting" useGeneratedKeys="true" keyProperty="id">
@@ -36,17 +43,21 @@
             can_see_post_follower,
             can_see_post_following,
             can_see_post_friend,
+            can_see_post_all,
             post_visibility_duration_follower,
             post_visibility_duration_following,
-            post_visibility_duration_friend
+            post_visibility_duration_friend,
+            post_visibility_duration_all
         ) VALUES (
             #{userId},
             #{canSeePostFollower},
             #{canSeePostFollowing},
             #{canSeePostFriend},
+            #{canSeePostAll},
             #{postVisibilityDurationFollower,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
             #{postVisibilityDurationFollowing,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
-            #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
+            #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
+            #{postVisibilityDurationAll,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
         )
     </insert>
 
@@ -62,9 +73,11 @@
             can_see_post_follower = #{canSeePostFollower},
             can_see_post_following = #{canSeePostFollowing},
             can_see_post_friend = #{canSeePostFriend},
+            can_see_post_all = #{canSeePostAll},
             post_visibility_duration_follower = #{postVisibilityDurationFollower,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
             post_visibility_duration_following = #{postVisibilityDurationFollowing,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
             post_visibility_duration_friend = #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
+            post_visibility_duration_all = #{postVisibilityDurationAll,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
         WHERE user_id = #{userId}
     </update>
 </mapper>

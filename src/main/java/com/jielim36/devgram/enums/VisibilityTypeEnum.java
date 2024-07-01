@@ -1,7 +1,9 @@
 package com.jielim36.devgram.enums;
 
-public enum FollowRelation {
+public enum VisibilityTypeEnum {
+    PRIVATE,
     FOLLOWER,
     FOLLOWING,
-    FRIEND
+    FRIEND,
+    ALL
 }

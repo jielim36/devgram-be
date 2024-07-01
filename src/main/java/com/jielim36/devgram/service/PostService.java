@@ -6,7 +6,6 @@ import com.jielim36.devgram.DTO.PostDTO;
 import com.jielim36.devgram.entity.PostEntity;
 import com.jielim36.devgram.entity.PostImageEntity;
 import com.jielim36.devgram.entity.UserEntity;
-import com.jielim36.devgram.enums.FollowRelation;
 import com.jielim36.devgram.mapper.PostImagesMapper;
 import com.jielim36.devgram.mapper.PostMapper;
 import org.springframework.stereotype.Service;

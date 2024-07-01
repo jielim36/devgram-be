@@ -1,7 +1,7 @@
 package com.jielim36.devgram.service;
 
 import com.jielim36.devgram.entity.PrivacySettingsEntity;
-import com.jielim36.devgram.enums.FollowRelation;
+import com.jielim36.devgram.enums.VisibilityTypeEnum;
 import com.jielim36.devgram.mapper.PrivacySettingsMapper;
 import org.springframework.stereotype.Service;
 
@@ -41,25 +41,27 @@ public class PrivacySettingsService {
      * @param privacySettingsEntity privacy settings of the user that being viewed
      * @return if return null, means the user is not allowed to view the post
      */
-    public FollowRelation isAllowedToViewPost(Long userId, PrivacySettingsEntity privacySettingsEntity ) {
+    public VisibilityTypeEnum getVisibilityType(Long userId, PrivacySettingsEntity privacySettingsEntity ) {
 
         Long postUserId = privacySettingsEntity.getUserId();
         boolean allowFollowerView = privacySettingsEntity.getCanSeePostFollower();
         boolean allowFollowingView = privacySettingsEntity.getCanSeePostFollowing();
         boolean allowFriendView = privacySettingsEntity.getCanSeePostFriend();
+        boolean allowAllView = privacySettingsEntity.getCanSeePostAll();
 
         boolean isFollower = followService.isFollowing(userId, postUserId);
         boolean isFollowing = followService.isFollowing(postUserId, userId);
         boolean isFriend = isFollower && isFollowing;
 
-        if (allowFollowerView && isFollower) {
-            return FollowRelation.FOLLOWER;
+        if (allowFriendView && isFriend) {
+            return VisibilityTypeEnum.FRIEND;
+        } else if(allowAllView) {
+            return VisibilityTypeEnum.ALL;
+        } else if (allowFollowerView && isFollower) {
+            return VisibilityTypeEnum.FOLLOWER;
         } else if (allowFollowingView && isFollowing) {
-            return FollowRelation.FOLLOWING;
-        } else if (allowFriendView && isFriend) {
-            return FollowRelation.FRIEND;
+            return VisibilityTypeEnum.FOLLOWING;
         }
-
         // step here means not allowed to access
         String entitiy = isFriend ? "friend" : isFollower ? "follower" : "the user got following";
         throw new RuntimeException("Only " + entitiy + " can view this profile");
@@ -67,6 +69,12 @@ public class PrivacySettingsService {
 //        return null;
     }
 
+    /**
+     * This method is used to get the date when the profile/post can be viewed by the user
+     * @param userId: user that want to view the profile
+     * @param postUserId: user that own the profile/post
+     * @return the date when the profile/post can be viewed by the user, throw error means not allowed
+     */
     public Date getPostVisibilityDuration(Long userId, Long postUserId) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date foreverDate = null;
@@ -85,21 +93,24 @@ public class PrivacySettingsService {
             return foreverDate;
         }
 
-        FollowRelation followRelation = isAllowedToViewPost(userId, privacySettingsEntity);
+        VisibilityTypeEnum followRelation = getVisibilityType(userId, privacySettingsEntity);
         if(followRelation == null) {
             return null;
         }
 
         int visibilityTime = 0;
         switch (followRelation) {
+            case FRIEND:
+                visibilityTime = privacySettingsEntity.getPostVisibilityDurationFriend().getDuration();
+                break;
+            case ALL:
+                visibilityTime = privacySettingsEntity.getPostVisibilityDurationAll().getDuration();
+                break;
             case FOLLOWER:
                 visibilityTime = privacySettingsEntity.getPostVisibilityDurationFollower().getDuration();
                 break;
             case FOLLOWING:
                 visibilityTime = privacySettingsEntity.getPostVisibilityDurationFollowing().getDuration();
-                break;
-            case FRIEND:
-                visibilityTime = privacySettingsEntity.getPostVisibilityDurationFriend().getDuration();
                 break;
         }
 

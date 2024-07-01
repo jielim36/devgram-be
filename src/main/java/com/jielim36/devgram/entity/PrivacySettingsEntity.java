@@ -11,22 +11,26 @@ public class PrivacySettingsEntity {
       private Boolean canSeePostFollower;
       private Boolean canSeePostFollowing;
       private Boolean canSeePostFriend;
+      private Boolean canSeePostAll;
       private PostVisibilityDurationEnum postVisibilityDurationFollower;
       private PostVisibilityDurationEnum postVisibilityDurationFollowing;
       private PostVisibilityDurationEnum postVisibilityDurationFriend;
+      private PostVisibilityDurationEnum postVisibilityDurationAll;
 
     public PrivacySettingsEntity() {
     }
 
-    public PrivacySettingsEntity(Long id, Long userId, Boolean canSeePostFollower, Boolean canSeePostFollowing, Boolean canSeePostFriend, PostVisibilityDurationEnum postVisibilityDurationFollower, PostVisibilityDurationEnum postVisibilityDurationFollowing, PostVisibilityDurationEnum postVisibilityDurationFriend) {
+    public PrivacySettingsEntity(Long id, Long userId, Boolean canSeePostFollower, Boolean canSeePostFollowing, Boolean canSeePostFriend, Boolean canSeePostAll, PostVisibilityDurationEnum postVisibilityDurationFollower, PostVisibilityDurationEnum postVisibilityDurationFollowing, PostVisibilityDurationEnum postVisibilityDurationFriend, PostVisibilityDurationEnum postVisibilityDurationAll) {
         this.id = id;
         this.userId = userId;
         this.canSeePostFollower = canSeePostFollower;
         this.canSeePostFollowing = canSeePostFollowing;
         this.canSeePostFriend = canSeePostFriend;
+        this.canSeePostAll = canSeePostAll;
         this.postVisibilityDurationFollower = postVisibilityDurationFollower;
         this.postVisibilityDurationFollowing = postVisibilityDurationFollowing;
         this.postVisibilityDurationFriend = postVisibilityDurationFriend;
+        this.postVisibilityDurationAll = postVisibilityDurationAll;
     }
 
     public Long getUserId() {
@@ -93,6 +97,22 @@ public class PrivacySettingsEntity {
         this.postVisibilityDurationFriend = postVisibilityDurationFriend;
     }
 
+    public Boolean getCanSeePostAll() {
+        return canSeePostAll;
+    }
+
+    public void setCanSeePostAll(Boolean canSeePostAll) {
+        this.canSeePostAll = canSeePostAll;
+    }
+
+    public PostVisibilityDurationEnum getPostVisibilityDurationAll() {
+        return postVisibilityDurationAll;
+    }
+
+    public void setPostVisibilityDurationAll(PostVisibilityDurationEnum postVisibilityDurationAll) {
+        this.postVisibilityDurationAll = postVisibilityDurationAll;
+    }
+
     @Override
     public String toString() {
         return "PrivacySettingsEntity{" +
@@ -101,9 +121,11 @@ public class PrivacySettingsEntity {
                 ", canSeePostFollower=" + canSeePostFollower +
                 ", canSeePostFollowing=" + canSeePostFollowing +
                 ", canSeePostFriend=" + canSeePostFriend +
+                ", canSeePostAll=" + canSeePostAll +
                 ", postVisibilityDurationFollower=" + postVisibilityDurationFollower +
                 ", postVisibilityDurationFollowing=" + postVisibilityDurationFollowing +
                 ", postVisibilityDurationFriend=" + postVisibilityDurationFriend +
+                ", postVisibilityDurationAll=" + postVisibilityDurationAll +
                 '}';
     }
 }
