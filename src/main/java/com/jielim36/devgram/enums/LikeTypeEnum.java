@@ -2,7 +2,7 @@ package com.jielim36.devgram.enums;
 
 public enum LikeTypeEnum {
 
-    POST("post"),COMMENT("comment");
+    POST("post"),COMMENT("comment"),REEL("reel");
 
     private final String type;
 

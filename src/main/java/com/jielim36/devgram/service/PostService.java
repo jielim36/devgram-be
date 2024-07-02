@@ -1,6 +1,6 @@
 package com.jielim36.devgram.service;
 
-import com.jielim36.devgram.DTO.CommentDTO;
+import com.jielim36.devgram.DTO.PostCommentDTO;
 import com.jielim36.devgram.DTO.LikeDTO;
 import com.jielim36.devgram.DTO.PostDTO;
 import com.jielim36.devgram.entity.PostEntity;
@@ -94,7 +94,7 @@ public class PostService {
             images_url[j] = postImagesByPostId[j].getImage_url();
         }
 
-        CommentDTO[] commentsByPostId = commentService.getCommentsByPostId(post.getId(), user_id);
+        PostCommentDTO[] commentsByPostId = commentService.getCommentsByPostId(post.getId(), user_id);
 
         LikeDTO[] likesByPostId = likeService.getLikesByPostId(post.getId());
 

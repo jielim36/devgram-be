@@ -1,13 +1,12 @@
 package com.jielim36.devgram;
 
-import com.jielim36.devgram.DTO.CommentDTO;
+import com.jielim36.devgram.DTO.PostCommentDTO;
 import com.jielim36.devgram.DTO.LikeDTO;
-import com.jielim36.devgram.entity.CommentEntity;
-import com.jielim36.devgram.entity.LikeEntity;
-import com.jielim36.devgram.entity.PrivacySettingsEntity;
-import com.jielim36.devgram.entity.UserInfoEntity;
+import com.jielim36.devgram.DTO.ReelDTO;
+import com.jielim36.devgram.entity.*;
 import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
+import com.jielim36.devgram.enums.ReelPlatformEnum;
 import com.jielim36.devgram.mapper.*;
 import com.jielim36.devgram.service.*;
 import org.junit.jupiter.api.Test;
@@ -50,6 +49,9 @@ class DevgramApplicationTests {
     @Autowired
     private PrivacySettingsMapper privacySettingsMapper;
 
+    @Autowired
+    private ReelService reelService;
+
     private final Long userId = 1001L;
 
     @Test
@@ -63,13 +65,13 @@ class DevgramApplicationTests {
 
     @Test
     void testSelectComments() {
-        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L, userId);
+        PostCommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L, userId);
         System.out.println(Arrays.toString(commentsByPostId));
     }
 
     @Test
     void testAddComment() {
-        CommentEntity commentAddByUnitTest = new CommentEntity(1L, null, userId, "Comment add by unit test");
+        PostCommentEntity commentAddByUnitTest = new PostCommentEntity(1L, null, userId, "Comment add by unit test");
         commentMapper.addComment(commentAddByUnitTest);
         System.out.println(commentAddByUnitTest.getId() != null ? "Add comment success" : "Add comment failed");
 
@@ -96,7 +98,7 @@ class DevgramApplicationTests {
 
     @Test
     void getCommentByPostId() {
-        CommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L,userId);
+        PostCommentDTO[] commentsByPostId = commentMapper.getCommentsByPostId(1L,userId);
         System.out.println(Arrays.toString(commentsByPostId));
     }
 
@@ -115,7 +117,7 @@ class DevgramApplicationTests {
 
     @Test
     void getPostByNullUserId() {
-        CommentDTO[] comments = postService.getPostById(1L, 1001L).getComments();
+        PostCommentDTO[] comments = postService.getPostById(1L, 1001L).getComments();
         System.out.println(Arrays.toString(comments));
     }
 
@@ -216,5 +218,31 @@ class DevgramApplicationTests {
         Long targetUserId = 1002L;
         Date postVisibilityDuration = privacySettingsService.getPostVisibilityDuration(sender, targetUserId);
         System.out.println(postVisibilityDuration);
+    }
+
+    @Test
+    void testInsertReel(){
+        ReelEntity reelEntity = new ReelEntity(
+                null,
+                userId,
+                "This is a youtube video",
+                "https://www.youtube.com/shorts/otI8kIrE5YA",
+                ReelPlatformEnum.YOUTUBE,
+                null,
+                null
+        );
+        reelService.insertReel(reelEntity);
+    }
+
+    @Test
+    void testSelectReelByUserId(){
+        ReelDTO[] reelEntities = reelService.selectPopularReels(userId, 0);
+        System.out.println(Arrays.toString(reelEntities));
+    }
+
+    @Test
+    void testSelectReel() {
+        ReelDTO[] reelDTOS = reelService.selectReelsByUserId(userId, userId);
+        System.out.println(Arrays.toString(reelDTOS));
     }
 }

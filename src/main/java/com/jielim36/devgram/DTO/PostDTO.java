@@ -1,6 +1,5 @@
 package com.jielim36.devgram.DTO;
 
-import com.jielim36.devgram.entity.CommentEntity;
 import com.jielim36.devgram.entity.PostEntity;
 
 import java.util.Arrays;
@@ -13,10 +12,10 @@ public class PostDTO {
     private String created_at;
     private String updated_at;
     private String[] images_url;
-    private CommentDTO[] comments;
+    private PostCommentDTO[] comments;
     private LikeDTO[] likes;
 
-    public PostDTO(Long id, UserDTO user, String description, String created_at, String updated_at, String[] images_url, CommentDTO[] comments, LikeDTO[] likes) {
+    public PostDTO(Long id, UserDTO user, String description, String created_at, String updated_at, String[] images_url, PostCommentDTO[] comments, LikeDTO[] likes) {
         this.id = id;
         this.user = user;
         this.description = description;
@@ -27,7 +26,7 @@ public class PostDTO {
         this.likes = likes;
     }
 
-    public PostDTO(PostEntity postEntity, UserDTO user, String[] images_url, CommentDTO[] comments, LikeDTO[] likes) {
+    public PostDTO(PostEntity postEntity, UserDTO user, String[] images_url, PostCommentDTO[] comments, LikeDTO[] likes) {
         this.id = postEntity.getId();
         this.user = user;
         this.description = postEntity.getDescription();
@@ -86,11 +85,11 @@ public class PostDTO {
         this.images_url = images_url;
     }
 
-    public CommentDTO[] getComments() {
+    public PostCommentDTO[] getComments() {
         return comments;
     }
 
-    public void setComments(CommentDTO[] comments) {
+    public void setComments(PostCommentDTO[] comments) {
         this.comments = comments;
     }
 

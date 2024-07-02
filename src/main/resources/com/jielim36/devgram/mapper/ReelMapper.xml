@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jielim36.devgram.mapper.ReelMapper">
+    
+    <resultMap id="ReelDTO" type="com.jielim36.devgram.DTO.ReelDTO">
+        <id property="id" column="id"/>
+        <result property="description" column="description"/>
+        <result property="reel_url" column="reel_url"/>
+        <result property="platform" column="platform"/>
+        <result property="like_count" column="like_count"/>
+        <result property="comment_count" column="comment_count"/>
+        <result property="is_liked" column="is_liked"/>
+        <result property="created_at" column="created_at"/>
+        <result property="updated_at" column="updated_at"/>
+        <association property="user" javaType="com.jielim36.devgram.DTO.UserDTO">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="avatar_url" column="avatar_url"/>
+        </association>
+    </resultMap>
+    
+    <insert id="insertReel">
+        INSERT INTO reel (id, user_id, description, reel_url, platform)
+        VALUES (#{id}, #{user_id}, #{description}, #{reel_url}, #{platform, })
+    </insert>
+
+    <select id="selectReelById" resultMap="ReelDTO">
+        SELECT reel.*,
+        (
+            SELECT COUNT(*) FROM like l
+            WHERE l.parent_id = reel.id AND l.type = 'reel' AND l.is_deleted = FALSE
+        ) AS like_count,
+        (
+            SELECT COUNT(*) FROM comment_reel c
+            WHERE c.reel_id = reel.id
+        ) AS comment_count,
+        (
+            SELECT COUNT(*) FROM like l
+            WHERE l.parent_id = reel.id AND l.type = 'reel' AND l.user_id = #{user_id} AND l.is_deleted = FALSE
+        ) AS is_liked,
+        (
+            SELECT id, username, avatar_url
+            FROM user
+            WHERE id = reel.user_id
+        ) AS user
+        FROM reel
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectReelsByUserId" resultMap="ReelDTO">
+        SELECT
+            reel.id,
+            reel.description,
+            reel.reel_url,
+            reel.platform,
+            reel.created_at,
+            reel.updated_at,
+            u.id AS user_id, u.username, u.avatar_url,
+            (
+                SELECT COUNT(*) FROM `like` l
+                WHERE l.parent_id = reel.id
+                AND l.type = 'reel'
+                AND l.is_deleted = FALSE
+            ) AS like_count,
+            (
+                SELECT COUNT(*) FROM comment_reel c
+                WHERE c.reel_id = reel.id
+            ) AS comment_count,
+            EXISTS (
+                SELECT COUNT(*) FROM `like` l
+                WHERE l.parent_id = reel.id
+                AND l.type = 'reel'
+                AND l.user_id = #{me_id}
+                AND l.is_deleted = FALSE
+            ) AS is_liked
+        FROM reel
+        JOIN `user` u
+        ON reel.user_id = u.id
+        WHERE reel.user_id = #{user_id}
+    </select>
+
+    <select id="selectPopularReels" resultMap="ReelDTO">
+        SELECT
+            reel.id,
+            reel.description,
+            reel.reel_url,
+            reel.platform,
+            reel.created_at,
+            reel.updated_at,
+            u.id AS user_id, u.username, u.avatar_url,
+            (
+                SELECT COUNT(*) FROM `like` l
+                WHERE l.parent_id = reel.id
+                AND l.type = 'reel'
+                AND l.is_deleted = FALSE
+            ) AS like_count,
+            (
+                SELECT COUNT(*) FROM comment_reel c
+                WHERE c.reel_id = reel.id
+            ) AS comment_count,
+            (
+                SELECT COUNT(*) FROM `like` l
+                WHERE l.parent_id = reel.id
+                AND l.type = 'reel'
+                AND l.user_id = #{me_id}
+                AND l.is_deleted = FALSE
+            ) AS is_liked
+        FROM reel
+        JOIN `user` u
+        ON reel.user_id = u.id
+        ORDER BY like_count DESC
+        LIMIT #{offset}, #{limit};
+    </select>
+
+    <delete id="deleteReelById" parameterType="int">
+        DELETE FROM reel WHERE id = #{id}
+    </delete>
+
+</mapper>

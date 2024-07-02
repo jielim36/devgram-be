@@ -1,9 +1,9 @@
 package com.jielim36.devgram.DTO;
 
-public class CommentDTO {
+public class ReelCommentDTO {
 
     private Long id;
-    private Long post_id;
+    private Long reel_id;
     private Long parent_id;
     private UserDTO user;
     private String content;
@@ -12,12 +12,12 @@ public class CommentDTO {
     private String created_at;
     private String updated_at;
 
-    public CommentDTO() {
+    public ReelCommentDTO() {
     }
 
-    public CommentDTO(Long id, Long post_id, Long parent_id, UserDTO user, String content, Integer like_count,boolean is_liked, String created_at, String updated_at) {
+    public ReelCommentDTO(Long id, Long reel_id, Long parent_id, UserDTO user, String content, Integer like_count, boolean is_liked, String created_at, String updated_at) {
         this.id = id;
-        this.post_id = post_id;
+        this.reel_id = reel_id;
         this.parent_id = parent_id;
         this.user = user;
         this.content = content;
@@ -35,12 +35,12 @@ public class CommentDTO {
         this.id = id;
     }
 
-    public Long getPost_id() {
-        return post_id;
+    public Long getReel_id() {
+        return reel_id;
     }
 
-    public void setPost_id(Long post_id) {
-        this.post_id = post_id;
+    public void setReel_id(Long reel_id) {
+        this.reel_id = reel_id;
     }
 
     public Long getParent_id() {
@@ -103,7 +103,7 @@ public class CommentDTO {
     public String toString() {
         return "CommentDTO{" +
                 "id=" + id +
-                ", post_id=" + post_id +
+                ", post_id=" + reel_id +
                 ", parent_id=" + parent_id +
                 ", user=" + user +
                 ", content='" + content + '\'' +

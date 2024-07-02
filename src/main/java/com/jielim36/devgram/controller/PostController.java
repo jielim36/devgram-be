@@ -94,6 +94,10 @@ public class PostController {
 
         Boolean isSuccess = postService.addPost(files, description, userId);
 
+        if(!isSuccess) {
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Failed to add post.");
+        }
+
         return ResultResponse.success(isSuccess);
     }
 
