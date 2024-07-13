@@ -1,6 +1,8 @@
 package com.jielim36.devgram.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jielim36.devgram.common.ResultResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +49,11 @@ public class SecurityConfig {
                         logout
                             .logoutSuccessHandler((request, response, authentication) -> {
                                 response.setStatus(HttpServletResponse.SC_OK);
-                                response.sendRedirect("/index.html");
+                                response.setContentType("application/json");
+                                ResultResponse success = ResultResponse.success();
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                String jsonResponse = objectMapper.writeValueAsString(success);
+                                response.getWriter().write(jsonResponse);
                             })
                             .deleteCookies("JSESSIONID")
                             .invalidateHttpSession(true))
