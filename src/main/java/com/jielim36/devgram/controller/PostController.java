@@ -41,7 +41,7 @@ public class PostController {
         PostDTO[] popularPosts = postService.getPopularPosts(user_id);
 
         if(popularPosts == null || popularPosts.length == 0 || popularPosts[0] == null) {
-            return ResultResponse.failure(ResultCode.NOT_FOUND, "No popular posts found.");
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "No popular posts found.");
         }
 
         ResultResponse success = ResultResponse.success(popularPosts);
@@ -53,7 +53,7 @@ public class PostController {
         PostDTO[] followingPosts = postService.getFollowingPosts(userId);
 
         if(followingPosts == null || followingPosts.length == 0 || followingPosts[0] == null) {
-            return ResultResponse.failure(ResultCode.NOT_FOUND, "No following posts found.");
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "No following posts found.");
         }
 
         return ResultResponse.success(followingPosts);
@@ -67,7 +67,7 @@ public class PostController {
         PostDTO[] popularPosts = postService.getPopularPostsWithPagination(user_id, pages);
 
         if(popularPosts == null || popularPosts.length == 0 || popularPosts[0] == null) {
-            return ResultResponse.failure(ResultCode.NOT_FOUND, "No popular posts found.");
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "No popular posts found.");
         }
 
         ResultResponse success = ResultResponse.success(popularPosts);
