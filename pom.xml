@@ -104,6 +104,17 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
         </dependency>
+        <!--    Pusher for WebSocket    -->
+        <dependency>
+            <groupId>com.pusher</groupId>
+            <artifactId>pusher-http-java</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
     </dependencies>
 
     <build>

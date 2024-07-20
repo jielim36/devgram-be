@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jielim36.devgram.mapper.ChatMapper">
+
+    <resultMap id="chatDTO" type="com.jielim36.devgram.DTO.ChatDTO">
+        <id property="id" column="id"/>
+        <result property="created_at" column="created_at"/>
+        <result property="unread_count" column="unread_count"/>
+        <result property="last_read_message_id" column="last_read_message_id"/>
+        <association property="user1" javaType="com.jielim36.devgram.DTO.UserDTO">
+            <id property="id" column="user1_id"/>
+            <result property="username" column="user1_username"/>
+            <result property="avatar_url" column="user1_avatar_url"/>
+        </association>
+        <association property="user2" javaType="com.jielim36.devgram.DTO.UserDTO">
+            <id property="id" column="user2_id"/>
+            <result property="username" column="user2_username"/>
+            <result property="avatar_url" column="user2_avatar_url"/>
+        </association>
+        <association property="latestMessage" javaType="com.jielim36.devgram.entity.MessageEntity">
+            <id property="id" column="message_id"/>
+            <result property="id" column="id"/>
+            <result property="chat_id" column="chat_id"/>
+            <result property="content" column="content"/>
+            <result property="sender_id" column="sender_id"/>
+            <result property="receiver_id" column="receiver_id"/>
+            <result property="refer_msg_id" column="refer_msg_id"/>
+            <result property="reaction" column="reaction"/>
+            <result property="is_read" column="is_read"/>
+            <result property="created_at" column="created_at"/>
+        </association>
+    </resultMap>
+
+    <insert id="createChatRoom" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO chat (user1_id, user2_id) VALUES (#{user1_id}, #{user2_id})
+    </insert>
+
+    <select id="getChatRoomIdByMember" resultType="Long">
+        SELECT id FROM chat
+        WHERE
+            (user1_id = #{user1_id} AND user2_id = #{user2_id})
+            OR
+            (user1_id = #{user2_id} AND user2_id = #{user1_id})
+    </select>
+
+    <select id="getChatRoomsByUserId" resultMap="chatDTO">
+        SELECT
+        chat.id,
+        chat.created_at,
+        user1.id AS user1_id,
+        user1.username AS user1_username,
+        user1.avatar_url AS user1_avatar_url,
+        user2.id AS user2_id,
+        user2.username AS user2_username,
+        user2.avatar_url AS user2_avatar_url,
+        latestMessage.id AS message_id,
+        latestMessage.chat_id,
+        latestMessage.content,
+        latestMessage.sender_id,
+        latestMessage.receiver_id,
+        latestMessage.refer_msg_id,
+        latestMessage.reaction,
+        latestMessage.is_read,
+        latestMessage.created_at,
+        (
+            SELECT COUNT(*) FROM messages WHERE messages.chat_id = chat.id AND is_read = FALSE
+        ) AS unread_count
+        FROM chat
+        LEFT JOIN `user` user1 ON user1.id = chat.user1_id
+        LEFT JOIN `user` user2 ON user2.id = chat.user2_id
+        LEFT JOIN messages latestMessage ON latestMessage.id = (
+        SELECT m_inner.id
+        FROM messages m_inner
+        WHERE m_inner.chat_id = chat.id
+        ORDER BY m_inner.created_at DESC
+        LIMIT 1
+        )
+        WHERE chat.user1_id = #{user_id} OR chat.user2_id = #{user_id}
+        ORDER BY chat.id;
+    </select>
+</mapper>

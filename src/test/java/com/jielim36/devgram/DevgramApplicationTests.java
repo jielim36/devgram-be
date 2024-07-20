@@ -1,5 +1,6 @@
 package com.jielim36.devgram;
 
+import com.jielim36.devgram.DTO.ChatDTO;
 import com.jielim36.devgram.DTO.PostCommentDTO;
 import com.jielim36.devgram.DTO.LikeDTO;
 import com.jielim36.devgram.DTO.ReelDTO;
@@ -9,6 +10,7 @@ import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
 import com.jielim36.devgram.enums.ReelPlatformEnum;
 import com.jielim36.devgram.mapper.*;
 import com.jielim36.devgram.service.*;
+import com.pusher.rest.Pusher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,6 +53,15 @@ class DevgramApplicationTests {
 
     @Autowired
     private ReelService reelService;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private ChatService chatService;
+
+    @Autowired
+    private Pusher pusher;
 
     private final Long userId = 1001L;
 
@@ -244,5 +255,48 @@ class DevgramApplicationTests {
     void testSelectReel() {
         ReelDTO[] reelDTOS = reelService.selectReelsByUserId(userId, userId);
         System.out.println(Arrays.toString(reelDTOS));
+    }
+
+    @Test
+    void getMessageByUserId() {
+        Long user2 = 1002L;
+        ChatEntity ChatEntity = new ChatEntity(userId, user2);
+        System.out.println(messageService.getMessages(ChatEntity));
+    }
+
+    @Test
+    void sendMessageWithoutSaveDatabase() {
+        Long sender = 1003L;
+        Long receiver = 1001L;
+
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.setSender_id(sender);
+        messageEntity.setReceiver_id(receiver);
+        messageEntity.setContent("Hello, this is a test message");
+        messageEntity.setId(102L);
+
+        String channelName = "chat." + messageEntity.getReceiver_id();
+        String eventName = "incoming-msg";
+        pusher.trigger(channelName, eventName, messageEntity);
+    }
+
+    @Test
+    void sendMessageWithSaveDatabase() {
+        Long sender = 1003L;
+        Long receiver = 1001L;
+
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.setSender_id(sender);
+        messageEntity.setReceiver_id(receiver);
+        messageEntity.setContent("Hello, this is a test message");
+        messageEntity.setIs_read(false);
+
+        messageService.sendMessage(messageEntity);
+    }
+
+    @Test
+    void testGetChatRoomsByUserId() {
+        ChatDTO[] chatRoomsByUserId = chatService.getChatRoomsByUserId(userId);
+        System.out.println(Arrays.toString(chatRoomsByUserId));
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jielim36.devgram.mapper.MessageMapper">
+    <insert id="addMessage" parameterType="com.jielim36.devgram.entity.MessageEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO messages (chat_id, sender_id, receiver_id, content, refer_msg_id, reaction, is_read, created_at, updated_at)
+        VALUES (#{chat_id}, #{sender_id}, #{receiver_id}, #{content}, #{refer_msg_id}, #{reaction}, #{is_read}, NOW(), NOW())
+    </insert>
+
+    <select id="getMessagesByChat" resultType="com.jielim36.devgram.entity.MessageEntity">
+        SELECT * FROM messages
+        WHERE
+            (sender_id = #{user1_id} AND receiver_id = #{user2_id})
+            OR
+            (sender_id = #{user2_id} AND receiver_id = #{user1_id})
+        ORDER BY created_at
+    </select>
+</mapper>
