@@ -29,8 +29,6 @@ public class MessageService {
         Long chatRoomId = chatService.getChatRoomIdByMember(messageEntity.getSender_id(), messageEntity.getReceiver_id());
         messageEntity.setChat_id(chatRoomId);
 
-        System.out.println(messageEntity);
-
         int affectedRows = messageMapper.addMessage(messageEntity);
         if (affectedRows == 0) {
             throw new RuntimeException("Failed to send message");
