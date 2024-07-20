@@ -64,7 +64,7 @@
             latestMessage.is_read,
             latestMessage.created_at,
             (
-                SELECT COUNT(*) FROM messages WHERE messages.chat_id = chat.id AND is_read = FALSE AND messages.sender_id != 1001
+                SELECT COUNT(*) FROM messages WHERE messages.chat_id = chat.id AND is_read = FALSE AND messages.sender_id != #{user_id}
             ) AS unread_count
         FROM chat
         LEFT JOIN `user` user1 ON user1.id = chat.user1_id
