@@ -45,9 +45,9 @@ public class MessageController {
         return ResultResponse.success(true);
     }
 
-    @DeleteMapping("/{message_id}")
-    public ResultResponse deleteMessage(@PathVariable Long message_id) {
-        boolean isSuccess = messageService.deleteMessage(message_id);
+    @DeleteMapping
+    public ResultResponse deleteMessage(@RequestBody MessageEntity messageEntity) {
+        boolean isSuccess = messageService.deleteMessage(messageEntity);
         return isSuccess ? ResultResponse.success(true) : ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, null);
     }
 

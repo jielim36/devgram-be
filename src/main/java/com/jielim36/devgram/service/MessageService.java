@@ -59,9 +59,18 @@ public class MessageService {
         }
     }
 
-    public boolean deleteMessage(Long messageId) {
+    public boolean deleteMessage(MessageEntity messageEntity) {
+        Long messageId = messageEntity.getId();
         int affectedRows = messageMapper.deleteMessageById(messageId);
-        return affectedRows > 0;
+        boolean isSuccess = affectedRows > 0;
+        if(isSuccess) {
+            // pusher trigger
+            String channelName = "chat." + messageEntity.getReceiver_id();
+            String eventName = "delete-msg";
+            pusher.trigger(channelName, eventName, messageId);
+        }
+
+        return isSuccess;
     }
 
 }
