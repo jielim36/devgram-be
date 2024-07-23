@@ -16,4 +16,13 @@
             (sender_id = #{user2_id} AND receiver_id = #{user1_id})
         ORDER BY created_at
     </select>
+
+    <update id="updateIsReadByChatId">
+        UPDATE messages
+        SET is_read = 1
+        WHERE
+            chat_id = #{chat_id}
+            AND
+            sender_id != #{sender_id}
+    </update>
 </mapper>

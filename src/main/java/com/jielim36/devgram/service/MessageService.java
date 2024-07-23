@@ -41,9 +41,22 @@ public class MessageService {
         return messageEntity;
     }
 
-    public List<MessageEntity> getMessages(ChatEntity chatEntity) {
+    public List<MessageEntity> getMessages(ChatEntity chatEntity, Long meId) {
         List<MessageEntity> messagesByUserId = messageMapper.getMessagesByChat(chatEntity);
+        if(messagesByUserId.size() > 0) {
+            Long receiverId = chatEntity.getUser1_id().equals(meId) ? chatEntity.getUser2_id() : chatEntity.getUser1_id();
+            updateIsReadByChat(chatEntity.getId(), meId, receiverId);
+        }
         return messagesByUserId;
+    }
+
+    public void updateIsReadByChat(Long chatId, Long senderId, Long receiverId) {
+        int affectedRows = messageMapper.updateIsReadByChatId(chatId, senderId);
+        if(affectedRows > 0) {
+            String channelName = "chat." + receiverId;
+            String eventName = "read";
+            pusher.trigger(channelName, eventName, chatId);
+        }
     }
 
 }

@@ -13,4 +13,6 @@ public interface MessageMapper {
 
     List<MessageEntity> getMessagesByChat(ChatEntity chatEntity);
 
+    int updateIsReadByChatId(Long chat_id, Long sender_id);
+
 }
