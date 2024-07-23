@@ -42,6 +42,13 @@ public class MessageController {
     public ResultResponse updateIsReadByChatId(@PathVariable Long chat_id, @PathVariable Long receiver_id ,HttpServletRequest request) {
         Long meId = (Long) request.getAttribute("userId");
         messageService.updateIsReadByChat(chat_id, meId, receiver_id);
-        return ResultResponse.success();
+        return ResultResponse.success(true);
     }
+
+    @DeleteMapping("/{message_id}")
+    public ResultResponse deleteMessage(@PathVariable Long message_id) {
+        boolean isSuccess = messageService.deleteMessage(message_id);
+        return isSuccess ? ResultResponse.success(true) : ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, null);
+    }
+
 }

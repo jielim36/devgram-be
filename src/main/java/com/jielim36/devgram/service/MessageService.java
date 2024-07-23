@@ -59,4 +59,9 @@ public class MessageService {
         }
     }
 
+    public boolean deleteMessage(Long messageId) {
+        int affectedRows = messageMapper.deleteMessageById(messageId);
+        return affectedRows > 0;
+    }
+
 }

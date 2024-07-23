@@ -15,4 +15,6 @@ public interface MessageMapper {
 
     int updateIsReadByChatId(Long chat_id, Long sender_id);
 
+    int deleteMessageById(Long message_id);
+
 }

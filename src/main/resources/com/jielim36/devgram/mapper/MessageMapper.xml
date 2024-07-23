@@ -25,4 +25,9 @@
             AND
             sender_id != #{sender_id}
     </update>
+
+    <delete id="deleteMessageById">
+        DELETE FROM messages
+        WHERE id = #{message_id}
+    </delete>
 </mapper>
