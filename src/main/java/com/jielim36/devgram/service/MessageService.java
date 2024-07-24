@@ -54,7 +54,7 @@ public class MessageService {
         int affectedRows = messageMapper.updateIsReadByChatId(chatId, senderId);
         if(affectedRows > 0) {
             String channelName = "chat." + receiverId;
-            String eventName = "read";
+            String eventName = "read-msg";
             pusher.trigger(channelName, eventName, chatId);
         }
     }
@@ -68,6 +68,19 @@ public class MessageService {
             String channelName = "chat." + messageEntity.getReceiver_id();
             String eventName = "delete-msg";
             pusher.trigger(channelName, eventName, messageId);
+        }
+
+        return isSuccess;
+    }
+
+    public boolean updateMessageReaction(MessageEntity messageEntity) {
+        int affectedRows = messageMapper.updateMessageReaction(messageEntity);
+        boolean isSuccess = affectedRows > 0;
+        if(isSuccess) {
+            // pusher trigger
+            String channelName = "chat." + messageEntity.getSender_id();
+            String eventName = "reaction-msg";
+            pusher.trigger(channelName, eventName, messageEntity);
         }
 
         return isSuccess;

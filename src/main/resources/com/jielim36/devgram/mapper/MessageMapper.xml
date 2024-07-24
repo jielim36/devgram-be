@@ -30,4 +30,10 @@
         DELETE FROM messages
         WHERE id = #{message_id}
     </delete>
+
+    <update id="updateMessageReaction">
+        UPDATE messages
+        SET reaction = #{reaction}
+        WHERE id = #{id}
+    </update>
 </mapper>

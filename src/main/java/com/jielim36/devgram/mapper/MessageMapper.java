@@ -17,4 +17,6 @@ public interface MessageMapper {
 
     int deleteMessageById(Long message_id);
 
+    int updateMessageReaction(MessageEntity messageEntity);
+
 }

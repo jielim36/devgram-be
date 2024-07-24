@@ -51,4 +51,12 @@ public class MessageController {
         return isSuccess ? ResultResponse.success(true) : ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, null);
     }
 
+    @PutMapping("/reaction")
+    public ResultResponse updateMessageReaction(@RequestBody MessageEntity messageEntity) {
+        boolean isSuccess = messageService.updateMessageReaction(messageEntity);
+        return isSuccess ? ResultResponse.success(true) : ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, null);
+    }
+
+
+
 }
