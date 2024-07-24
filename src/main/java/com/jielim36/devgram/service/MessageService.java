@@ -6,6 +6,8 @@ import com.jielim36.devgram.mapper.MessageMapper;
 import com.pusher.rest.Pusher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -33,6 +35,13 @@ public class MessageService {
         if (affectedRows == 0) {
             throw new RuntimeException("Failed to send message");
         }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedNow = now.format(formatter);
+
+        // For saving resources, generate a temp created and updated date time for the created message instead of query again this message
+        messageEntity.setCreated_at(formattedNow);
+        messageEntity.setUpdated_at(formattedNow);
 
         String channelName = "chat." + messageEntity.getReceiver_id();
         String eventName = "incoming-msg";
