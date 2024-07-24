@@ -36,4 +36,10 @@
         SET reaction = #{reaction}
         WHERE id = #{id}
     </update>
+
+    <update id="updateMessageContent">
+        UPDATE messages
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
 </mapper>

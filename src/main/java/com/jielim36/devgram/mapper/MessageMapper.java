@@ -19,4 +19,6 @@ public interface MessageMapper {
 
     int updateMessageReaction(MessageEntity messageEntity);
 
+    int updateMessageContent(MessageEntity messageEntity);
+
 }

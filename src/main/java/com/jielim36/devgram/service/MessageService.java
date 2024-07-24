@@ -95,4 +95,17 @@ public class MessageService {
         return isSuccess;
     }
 
+    public boolean updateMessageContent(MessageEntity messageEntity) {
+        int affectedRows = messageMapper.updateMessageContent(messageEntity);
+        boolean isSuccess = affectedRows > 0;
+        if(isSuccess) {
+            // pusher trigger
+            String channelName = "chat." + messageEntity.getReceiver_id();
+            String eventName = "content-msg";
+            pusher.trigger(channelName, eventName, messageEntity);
+        }
+
+        return isSuccess;
+    }
+
 }
