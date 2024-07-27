@@ -77,6 +77,6 @@
             LIMIT 1
         )
         WHERE chat.user1_id = #{user_id} OR chat.user2_id = #{user_id}
-        ORDER BY chat.id;
+        ORDER BY latestMessage.created_at DESC
     </select>
 </mapper>
