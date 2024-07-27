@@ -63,6 +63,9 @@ class DevgramApplicationTests {
     @Autowired
     private Pusher pusher;
 
+    @Autowired
+    private FCMService fcmService;
+
     private final Long userId = 1001L;
 
     @Test
@@ -77,6 +80,16 @@ class DevgramApplicationTests {
         String channelName = "chat." + receiverId;
         String eventName = "read";
         pusher.trigger(channelName, eventName, chatId);
+    }
+
+    @Test
+    void testPushNotification() {
+        Long userId = 1001L;
+        String sender_avatar_url = "https://i.pinimg.com/564x/73/99/de/7399de1107c7f8cd95591f3755c1e07a.jpg";
+        String title = "New Message come from Jielim36";
+        String body = "Hello, I am Jielim36";
+
+        fcmService.sendChatNotificationToUser(sender_avatar_url, userId, title, body);
     }
 
 }

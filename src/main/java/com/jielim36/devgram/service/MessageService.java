@@ -2,6 +2,7 @@ package com.jielim36.devgram.service;
 
 import com.jielim36.devgram.entity.ChatEntity;
 import com.jielim36.devgram.entity.MessageEntity;
+import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.MessageMapper;
 import com.pusher.rest.Pusher;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,20 @@ public class MessageService {
 
     private final ChatService chatService;
     private final MessageMapper messageMapper;
+    private final UserService userService;
+    private final FCMService fcmService;
     private final Pusher pusher;
 
-    public MessageService(ChatService chatService, MessageMapper messageMapper, Pusher pusher) {
+    public MessageService(ChatService chatService,
+                          MessageMapper messageMapper,
+                          Pusher pusher,
+                          UserService userService,
+                          FCMService fcmService) {
         this.chatService = chatService;
         this.messageMapper = messageMapper;
         this.pusher = pusher;
+        this.userService = userService;
+        this.fcmService = fcmService;
     }
 
     public MessageEntity sendMessage(MessageEntity messageEntity) {
@@ -47,6 +56,14 @@ public class MessageService {
         String eventName = "incoming-msg";
         pusher.trigger(channelName, eventName, messageEntity);
 
+        // push notification
+        UserEntity sender = userService.selectUserById(messageEntity.getSender_id());
+        String sender_avatar_url = sender.getAvatar_url();
+        Long receiver_userId = messageEntity.getReceiver_id();
+        String title = "You have a new message from " + sender.getUsername();
+        String body = messageEntity.getContent();
+
+        fcmService.sendChatNotificationToUser(sender_avatar_url, receiver_userId, title, body);
         return messageEntity;
     }
 
