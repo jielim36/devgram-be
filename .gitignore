@@ -37,3 +37,6 @@ application.yml
 application-local.properties
 application-local.yml
 src/main/resources/application.yml
+
+# firebase config
+src/main/resources/firebaseServiceAccountKey.json
