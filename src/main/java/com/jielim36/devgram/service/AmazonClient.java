@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -62,8 +63,14 @@ public class AmazonClient {
     }
 
     public String deleteFileFromS3Bucket(String fileUrl) {
-        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
-        return "Successfully deleted";
+        try {
+            // 提取 key from URL (假设 URL 结构为 https://bucket-name.s3.region.amazonaws.com/key)
+            String key = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            s3client.deleteObject(new DeleteObjectRequest(bucketName, key));
+            return key;
+        } catch (AmazonS3Exception e) {
+            return e.getErrorMessage();
+        }
     }
+
 }

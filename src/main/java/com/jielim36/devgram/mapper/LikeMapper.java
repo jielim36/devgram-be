@@ -20,4 +20,8 @@ public interface LikeMapper {
 
     boolean deleteLikesByCommentId(Long commentId);
 
+    int deleteLikesByPostId(Long post_id);
+
+    int deleteCommentLikesByPostId(Long post_id);
+
 }

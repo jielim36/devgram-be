@@ -58,4 +58,9 @@
         WHERE id = #{id}
     </delete>
 
+    <delete id="deleteCommentsByPostId" parameterType="long">
+        DELETE FROM comment
+        WHERE post_id = #{post_id}
+    </delete>
+
 </mapper>

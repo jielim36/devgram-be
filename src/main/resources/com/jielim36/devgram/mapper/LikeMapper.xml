@@ -88,4 +88,18 @@
         WHERE parent_id = #{parent_id}
         AND type = 'comment';
     </delete>
+
+    <delete id="deleteLikesByPostId" parameterType="long">
+        DELETE FROM `like`
+        WHERE parent_id = #{post_id}
+        AND type = 'post';
+    </delete>
+
+    <delete id="deleteCommentLikesByPostId" parameterType="long">
+        DELETE FROM `like`
+        WHERE type = "comment"
+        AND parent_id IN (
+            SELECT id FROM `comment` where post_id = #{post_id}
+        )
+    </delete>
 </mapper>

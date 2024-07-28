@@ -9,6 +9,6 @@ public interface PostImagesMapper {
     void addPostImage(PostImageEntity postImage);
 
     PostImageEntity[] getPostImagesByPostId(Long postId);
-    boolean deletePostImageByPostId(Long id);
+    int deletePostImageByPostId(Long post_id);
 
 }

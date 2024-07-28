@@ -61,10 +61,19 @@ class DevgramApplicationTests {
     private ChatService chatService;
 
     @Autowired
+    private PostImagesService postImagesService;
+
+    @Autowired
     private Pusher pusher;
 
     @Autowired
     private FCMService fcmService;
+
+    @Autowired
+    private AmazonClient amazonClient;
+
+    @Autowired
+    private PostImagesMapper postImagesMapper;
 
     private final Long userId = 1001L;
 
@@ -90,6 +99,32 @@ class DevgramApplicationTests {
         String body = "Hello, I am Jielim36";
 
         fcmService.sendChatNotificationToUser(sender_avatar_url, userId, title, body);
+    }
+
+    @Test
+    void deletePostImagesByPostId() {
+//        (27,28,4,5,6,7,8,14)
+        Long postId = 14L;
+        postService.deletePostByPostId(postId);
+    }
+
+    @Test
+    void deleteImageFromS3Bucket() {
+        String imageUrl = "https://s3.ap-southeast-1.amazonaws.com/jielim36-devgram/post_27_2.jpg";
+        String s = amazonClient.deleteFileFromS3Bucket(imageUrl);
+        System.out.println(s);
+    }
+
+    @Test
+    void getImageFromS3Bucket() {
+        String imageUrl = "https://s3.ap-southeast-1.amazonaws.com/jielim36-devgram/post_27_0.jpg";
+    }
+
+    @Test
+    void deleteLikesByPostId() {
+        Long postId = 34L;
+        likeService.deleteLikesByPostId(postId);
+        likeService.deleteCommentLikesByPostId(postId);
     }
 
 }

@@ -41,7 +41,15 @@ public class LikeService {
         return like != null;
     }
 
+    public boolean deleteLikesByPostId(Long postId) {
+        return likeMapper.deleteLikesByPostId(postId) > 0;
+    }
+
     public boolean deleteLikesByCommentId(Long commentId) {
         return likeMapper.deleteLikesByCommentId(commentId);
+    }
+
+    public boolean deleteCommentLikesByPostId(Long postId) {
+        return likeMapper.deleteCommentLikesByPostId(postId) > 0;
     }
 }

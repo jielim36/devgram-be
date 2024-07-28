@@ -30,10 +30,16 @@ public class CommentService {
         return commentMapper.getCommentsByPostId(postId, user_id);
     }
 
-    @Transactional
     public boolean deleteCommentByCommentId(Long commentId) {
         boolean isSuccess = commentMapper.deleteCommentByCommentId(commentId);
         boolean isDeletedLikes = likeService.deleteLikesByCommentId(commentId);
+
+        return isSuccess && isDeletedLikes;
+    }
+
+    public boolean deleteCommentsByPostId(Long postId) {
+        boolean isSuccess = commentMapper.deleteCommentsByPostId(postId) > 0;
+        boolean isDeletedLikes = likeService.deleteCommentLikesByPostId(postId);
 
         return isSuccess && isDeletedLikes;
     }

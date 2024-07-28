@@ -17,8 +17,8 @@ public class PostImagesService {
 
     public void deletePostImagesByPostId(Long postId) {
         PostImageEntity[] postImagesByPostId = getPostImagesByPostId(postId);
+        postImagesMapper.deletePostImageByPostId(postId);
         for (PostImageEntity postImage : postImagesByPostId) {
-            postImagesMapper.deletePostImageByPostId(postImage.getId());
             amazonClient.deleteFileFromS3Bucket(postImage.getImage_url());
         }
     }

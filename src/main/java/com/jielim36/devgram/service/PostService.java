@@ -188,6 +188,8 @@ public class PostService {
     public boolean deletePostByPostId(Long postId) {
         boolean isSuccess = postMapper.deletePostByPostId(postId);
         postImagesService.deletePostImagesByPostId(postId);
+        likeService.deleteLikesByPostId(postId);
+        commentService.deleteCommentsByPostId(postId);
 
         return isSuccess;
     }

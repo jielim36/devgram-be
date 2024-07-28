@@ -9,6 +9,6 @@ public interface CommentMapper {
     void addComment(PostCommentEntity postCommentEntity);
     PostCommentDTO[] getCommentsByPostId(Long post_id, Long user_id);
     boolean deleteCommentByCommentId(Long id);
-
+    int deleteCommentsByPostId(Long post_id);
 
 }
