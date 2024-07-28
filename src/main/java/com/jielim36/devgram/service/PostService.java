@@ -46,13 +46,12 @@ public class PostService {
         this.privacySettingsService = privacySettingsService;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean addPost(MultipartFile[] files, String description, Long userId) {
         PostEntity post = new PostEntity(userId, description);
         postMapper.addPost(post);
 
-        // if post success added in database, it will return post with id
-        if (post.getId() == null){
+        if (post.getId() == null) {
             throw new RuntimeException("Failed to add post");
         }
 
@@ -62,28 +61,30 @@ public class PostService {
             for (int i = 0; i < files.length; i++) {
                 String fileUrl = amazonClient.uploadFile(files[i], "post_" + post.getId() + "_" + i + ".jpg");
                 images_url[i] = fileUrl;
+
                 if (fileUrl == null) {
                     throw new RuntimeException("Failed to upload image");
                 }
 
-                // after added image in S3, save the img url in database
                 PostImageEntity postImage = new PostImageEntity(post.getId(), fileUrl, i);
                 postImagesMapper.addPostImage(postImage);
+
                 if (postImage.getId() == null) {
                     throw new RuntimeException("Failed to add post image");
                 }
             }
         } catch (Exception e) {
             for (int i = 0; i < images_url.length; i++) {
-                if(images_url[i] != null){
+                if (images_url[i] != null) {
                     amazonClient.deleteFileFromS3Bucket(images_url[i]);
                 }
             }
-            throw new RuntimeException("Failed to upload image");
+            throw new RuntimeException("Failed to upload image", e);
         }
 
         return true;
     }
+
 
     public PostDTO getPostDTOByPostEntity(PostEntity post, Long user_id) {
         UserEntity userEntity = userService.selectUserById(post.getUser_id());

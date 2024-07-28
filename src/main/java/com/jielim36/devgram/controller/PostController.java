@@ -91,7 +91,6 @@ public class PostController {
                                         @RequestPart(value = "description") String description,
                                         HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-
         Boolean isSuccess = postService.addPost(files, description, userId);
 
         if(!isSuccess) {

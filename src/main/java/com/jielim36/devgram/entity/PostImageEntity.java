@@ -57,4 +57,14 @@ public class PostImageEntity {
     public void setPosition(Integer position) {
         this.position = position;
     }
+
+    @Override
+    public String toString() {
+        return "PostImageEntity{" +
+                "id=" + id +
+                ", post_id=" + post_id +
+                ", image_url='" + image_url + '\'' +
+                ", position=" + position +
+                '}';
+    }
 }
