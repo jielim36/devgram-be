@@ -1,6 +1,7 @@
 package com.jielim36.devgram.controller;
 
 import com.jielim36.devgram.CustomAnnotation.UserIdRequired.UserIdRequired;
+import com.jielim36.devgram.DTO.PostDTO;
 import com.jielim36.devgram.DTO.ReelDTO;
 import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.entity.PostEntity;
@@ -42,6 +43,18 @@ public class ReelController {
         }
 
         return ResultResponse.success(reelDTOs);
+    }
+
+    @UserIdRequired
+    @GetMapping("/user/{userId}")
+    public ResultResponse getReelsByUserId(@PathVariable Long userId, HttpServletRequest request) {
+        Long ownUserId = (Long) request.getAttribute("userId");
+        ReelDTO[] postsByUserId = reelService.selectReelsByUserId(userId, ownUserId);
+
+        if(postsByUserId == null) {
+            return ResultResponse.failure(ResultCode.INTERNAL_SERVER_ERROR, "Fetching reels failed.");
+        }
+        return ResultResponse.success(postsByUserId);
     }
 
 }

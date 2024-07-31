@@ -79,6 +79,8 @@
         JOIN `user` u
         ON reel.user_id = u.id
         WHERE reel.user_id = #{user_id}
+        AND reel.created_at >= #{startDate}
+        ORDER BY reel.created_at DESC;
     </select>
 
     <select id="selectPopularReels" resultMap="ReelDTO">

@@ -81,50 +81,13 @@ class DevgramApplicationTests {
     void contextLoads() {
     }
 
-    @Test
-    void testUpdateRead() {
-        Long chatId = 1L;
-        Long senderId = 1002L;
-        Long receiverId = 1001L;
-        String channelName = "chat." + receiverId;
-        String eventName = "read";
-        pusher.trigger(channelName, eventName, chatId);
-    }
 
     @Test
-    void testPushNotification() {
-        Long userId = 1001L;
-        String sender_avatar_url = "https://i.pinimg.com/564x/73/99/de/7399de1107c7f8cd95591f3755c1e07a.jpg";
-        String title = "New Message come from Jielim36";
-        String body = "Hello, I am Jielim36";
-
-        fcmService.sendChatNotificationToUser(sender_avatar_url, userId, title, body);
-    }
-
-    @Test
-    void deletePostImagesByPostId() {
-//        (27,28,4,5,6,7,8,14)
-        Long postId = 14L;
-        postService.deletePostByPostId(postId);
-    }
-
-    @Test
-    void deleteImageFromS3Bucket() {
-        String imageUrl = "https://s3.ap-southeast-1.amazonaws.com/jielim36-devgram/post_27_2.jpg";
-        String s = amazonClient.deleteFileFromS3Bucket(imageUrl);
-        System.out.println(s);
-    }
-
-    @Test
-    void getImageFromS3Bucket() {
-        String imageUrl = "https://s3.ap-southeast-1.amazonaws.com/jielim36-devgram/post_27_0.jpg";
-    }
-
-    @Test
-    void deleteLikesByPostId() {
-        Long postId = 34L;
-        likeService.deleteLikesByPostId(postId);
-        likeService.deleteCommentLikesByPostId(postId);
+    void selectProfileReels() {
+        Long meId = 1002L;
+        Long profileUserId = 1001L;
+        ReelDTO[] reels = reelService.selectReelsByUserId(profileUserId, meId);
+        System.out.println(Arrays.toString(reels));
     }
 
 }
