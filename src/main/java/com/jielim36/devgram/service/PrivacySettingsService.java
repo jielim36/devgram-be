@@ -62,11 +62,19 @@ public class PrivacySettingsService {
         } else if(allowAllView) {
             return VisibilityTypeEnum.ALL;
         }
-        // step here means not allowed to access
-        String entitiy = isFriend ? "friend" : isFollower ? "follower" : "the user got following";
-        throw new RuntimeException("Only " + entitiy + " can view this profile");
 
-//        return null;
+        // step here means not allowed to access
+        if(!allowAllView && !allowFollowerView && !allowFollowingView && !allowFriendView) {
+            throw new RuntimeException("You are not allowed to view this private profile");
+        } else if (allowFriendView && !isFriend) {
+            throw new RuntimeException("Only friend can view this profile");
+        } else if (allowFollowerView && !isFollower) {
+            throw new RuntimeException("Only follower can view this profile");
+        } else if (allowFollowingView && !isFollowing) {
+            throw new RuntimeException("Only the user got following can view this profile");
+        }
+
+        return null;
     }
 
     /**

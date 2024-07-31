@@ -76,7 +76,7 @@
             can_see_post_all = #{canSeePostAll},
             post_visibility_duration_follower = #{postVisibilityDurationFollower,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
             post_visibility_duration_following = #{postVisibilityDurationFollowing,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
-            post_visibility_duration_friend = #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
+            post_visibility_duration_friend = #{postVisibilityDurationFriend,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler},
             post_visibility_duration_all = #{postVisibilityDurationAll,javaType=com.jielim36.devgram.enums.PostVisibilityDurationEnum, typeHandler=com.jielim36.devgram.enumTypeHandler.PostVisibilityDurationEnumTypeHandler}
         WHERE user_id = #{userId}
     </update>
