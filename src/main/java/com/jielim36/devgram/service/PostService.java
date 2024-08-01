@@ -3,6 +3,7 @@ package com.jielim36.devgram.service;
 import com.jielim36.devgram.DTO.PostCommentDTO;
 import com.jielim36.devgram.DTO.LikeDTO;
 import com.jielim36.devgram.DTO.PostDTO;
+import com.jielim36.devgram.DTO.SearchResult;
 import com.jielim36.devgram.entity.PostEntity;
 import com.jielim36.devgram.entity.PostImageEntity;
 import com.jielim36.devgram.entity.UserEntity;
@@ -137,6 +138,29 @@ public class PostService {
         }
 
         return popularPostsDTO;
+    }
+
+    public SearchResult<PostDTO> getSearchPostsWithPagination(String value, Integer pages, Long userId) {
+        int offset = (pages - 1) * pageLimit;
+        PostEntity[] popularPosts = postMapper.getSearchPostsWithPagination(offset, pageLimit, value);
+        if (popularPosts == null) {
+            return null;
+        }
+
+        PostDTO[] popularPostsDTO = new PostDTO[popularPosts.length];
+        for (int i = 0; i < popularPosts.length; i++) {
+            popularPostsDTO[i] = getPostDTOByPostEntity(popularPosts[i], userId);
+        }
+
+        int total = postMapper.totalPostNumberBySearch(value);
+
+        SearchResult<PostDTO> searchResult = new SearchResult<>();
+        searchResult.setData(popularPostsDTO);
+        searchResult.setPage(pages);
+        searchResult.setLimit(pageLimit);
+        searchResult.setTotal(total);
+
+        return searchResult;
     }
 
     public PostDTO[] getFollowingPosts(Long userId) {

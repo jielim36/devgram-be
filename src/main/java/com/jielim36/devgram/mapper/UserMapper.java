@@ -1,5 +1,6 @@
 package com.jielim36.devgram.mapper;
 
+import com.jielim36.devgram.DTO.UserDTO;
 import com.jielim36.devgram.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,5 +16,9 @@ public interface UserMapper {
     UserEntity selectUserByGoogleId(String google_id);
 
     int updateUsername(Long id, String username);
+
+    UserDTO[] searchUser(String value, int offset, int limit, Long me_id);
+
+    int getTotalUserNumberBySearch(String value);
 
 }

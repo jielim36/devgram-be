@@ -38,6 +38,23 @@
         LIMIT #{offset}, #{limit};
     </select>
 
+    <select id="getSearchPostsWithPagination" resultType="com.jielim36.devgram.entity.PostEntity">
+        SELECT
+        p.*
+        FROM
+        post p
+        LEFT JOIN
+        `like` l
+        ON
+        p.id = l.parent_id AND l.type = 'post' AND l.is_deleted = FALSE
+        WHERE p.description LIKE CONCAT('%', #{value}, '%')
+        GROUP BY
+        p.id, p.user_id, p.description, p.created_at, p.updated_at
+        ORDER BY
+        COUNT(l.id) DESC
+        LIMIT #{offset}, #{limit};
+    </select>
+
     <select id="getFollowingPosts" resultType="com.jielim36.devgram.entity.PostEntity">
         SELECT * FROM post
             WHERE user_id IN (SELECT following_id FROM follow WHERE follower_id = #{user_id})
@@ -69,5 +86,9 @@
     <update id="updatePost" parameterType="com.jielim36.devgram.entity.PostEntity">
         UPDATE post SET description = #{description} WHERE id = #{id};
     </update>
+
+    <select id="totalPostNumberBySearch" resultType="Integer">
+        SELECT COUNT(*) FROM post WHERE description LIKE CONCAT('%', #{value}, '%');
+    </select>
 
 </mapper>

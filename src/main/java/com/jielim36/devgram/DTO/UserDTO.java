@@ -2,6 +2,7 @@ package com.jielim36.devgram.DTO;
 
 import com.jielim36.devgram.entity.StoryEntity;
 import com.jielim36.devgram.entity.UserEntity;
+import com.jielim36.devgram.entity.UserInfoEntity;
 
 import java.util.Arrays;
 import java.lang.String;
@@ -19,6 +20,7 @@ public class UserDTO {
     private String created_at;
     private String updated_at;
     private StoryEntity[] stories;
+    private UserInfoEntity userInfo;
 
     public UserDTO() {
     }
@@ -146,6 +148,14 @@ public class UserDTO {
 
     public void setIs_following(boolean is_following) {
         this.is_following = is_following;
+    }
+
+    public UserInfoEntity getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfoEntity userInfo) {
+        this.userInfo = userInfo;
     }
 
     @Override

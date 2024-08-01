@@ -1,18 +1,17 @@
 package com.jielim36.devgram.controller;
 
+import com.jielim36.devgram.DTO.SearchResult;
 import com.jielim36.devgram.DTO.UserDTO;
 import com.jielim36.devgram.enums.ResultCode;
 import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/user")
@@ -43,6 +42,15 @@ public class UserController {
         UserEntity result = userService.selectUserById(id);
 
         return ResultResponse.success(result.convertToDTO());
+    }
+
+    @GetMapping("/search")
+    public ResultResponse searchUser(@RequestParam("value") String value,
+                                                @RequestParam("page") Integer page,
+                                                HttpServletRequest request) {
+        Long user_id = (Long) request.getAttribute("userId");
+        SearchResult searchResult = userService.searchUsers(value, page, user_id);
+        return ResultResponse.success(searchResult);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.jielim36.devgram.service;
 
+import com.jielim36.devgram.DTO.SearchResult;
+import com.jielim36.devgram.DTO.UserDTO;
 import com.jielim36.devgram.enums.OAuthProviderEnum;
 import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
@@ -12,6 +14,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserInfoService userInfoService;
+    private final Integer LIMIT = 10;
 
     public UserService(UserMapper userMapper, UserInfoService userInfoService) {
         this.userMapper = userMapper;
@@ -49,6 +52,19 @@ public class UserService {
     public boolean updateUsername(Long id, String username) {
         int affectedRows = userMapper.updateUsername(id, username);
         return affectedRows > 0;
+    }
+
+    public SearchResult searchUsers(String value, int page, Long me_id) {
+        UserDTO[] userDTOS = userMapper.searchUser(value, page, LIMIT, me_id);
+        int total = userMapper.getTotalUserNumberBySearch(value);
+
+        SearchResult<UserDTO> result = new SearchResult<>();
+        result.setData(userDTOS);
+        result.setTotal(total);
+        result.setLimit(LIMIT);
+        result.setPage(page);
+
+        return result;
     }
 
 }

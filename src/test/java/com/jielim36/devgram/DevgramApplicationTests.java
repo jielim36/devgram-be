@@ -1,9 +1,6 @@
 package com.jielim36.devgram;
 
-import com.jielim36.devgram.DTO.ChatDTO;
-import com.jielim36.devgram.DTO.PostCommentDTO;
-import com.jielim36.devgram.DTO.LikeDTO;
-import com.jielim36.devgram.DTO.ReelDTO;
+import com.jielim36.devgram.DTO.*;
 import com.jielim36.devgram.entity.*;
 import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
@@ -88,6 +85,15 @@ class DevgramApplicationTests {
         Long profileUserId = 1001L;
         ReelDTO[] reels = reelService.selectReelsByUserId(profileUserId, meId);
         System.out.println(Arrays.toString(reels));
+    }
+
+    @Test
+    void searchPosts() {
+        Long userId = 1001L;
+        Integer page = 2;
+        String value = "y";
+        SearchResult<PostDTO> searchPostsWithPagination = postService.getSearchPostsWithPagination(value, page, userId);
+        System.out.println(searchPostsWithPagination.getTotal());
     }
 
 }

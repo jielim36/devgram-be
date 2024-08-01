@@ -3,6 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jielim36.devgram.mapper.UserMapper">
+
+    <resultMap id="UserDTO" type="com.jielim36.devgram.DTO.UserDTO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="avatar_url" property="avatar_url"/>
+        <result column="is_following" property="is_following"/>
+        <result column="created_at" property="created_at"/>
+        <result column="updated_at" property="updated_at"/>
+        <association property="userInfo" javaType="com.jielim36.devgram.entity.UserInfoEntity">
+            <result column="bio" property="bio"/>
+            <result column="address" property="address"/>
+            <result column="birthday" property="birthday"/>
+            <result column="gender" property="gender"/>
+        </association>
+    </resultMap>
+
     <select id="selectUsers" resultType="com.jielim36.devgram.entity.UserEntity">
         SELECT * FROM user
     </select>
@@ -26,5 +43,32 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="searchUser" resultMap="UserDTO">
+        SELECT
+            u.id, u.username, u.email, u.avatar_url, u.created_at, u.updated_at,
+            i.bio, i.address, i.birthday, i.gender,
+            (
+                SELECT COUNT(*)
+                FROM follow
+                WHERE follower_id = #{me_id}
+                AND following_id = u.id
+            ) as is_following
+        FROM `user` u
+        LEFT JOIN `user_info` i
+        ON  u.id = i.user_id
+        WHERE (u.username LIKE CONCAT('%', #{value}, '%') OR i.bio LIKE CONCAT('%', #{value}, '%'))
+        AND u.is_active = 1
+    </select>
+
+    <select id="getTotalUserNumberBySearch" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM `user` u
+        LEFT JOIN `user_info` i
+        ON  u.id = i.user_id
+        WHERE (u.username LIKE CONCAT('%', #{value}, '%') OR i.bio LIKE CONCAT('%', #{value}, '%'))
+        AND u.is_active = 1
+    </select>
 
 </mapper>

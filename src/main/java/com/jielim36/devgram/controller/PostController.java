@@ -2,6 +2,8 @@ package com.jielim36.devgram.controller;
 
 import com.jielim36.devgram.CustomAnnotation.UserIdRequired.UserIdRequired;
 import com.jielim36.devgram.DTO.PostDTO;
+import com.jielim36.devgram.DTO.SearchResult;
+import com.jielim36.devgram.DTO.request.SearchRequest;
 import com.jielim36.devgram.entity.PostEntity;
 import com.jielim36.devgram.enums.LikeTypeEnum;
 import com.jielim36.devgram.enums.ResultCode;
@@ -72,6 +74,21 @@ public class PostController {
 
         ResultResponse success = ResultResponse.success(popularPosts);
         return success;
+    }
+
+    @UserIdRequired
+    @GetMapping("/search")
+    public ResultResponse searchPosts(@RequestParam("value") String value,
+                                      @RequestParam("page") Integer page,
+                                      HttpServletRequest request) {
+        Long user_id = (Long) request.getAttribute("userId");
+        SearchResult searchResult = postService.getSearchPostsWithPagination(value,page, user_id);
+
+        if(searchResult.getData() == null) {
+            return ResultResponse.failure(ResultCode.NOT_FOUND, "No posts found.");
+        }
+
+        return ResultResponse.success(searchResult);
     }
 
     @GetMapping("/user/{userId}/following/page/{pages}")

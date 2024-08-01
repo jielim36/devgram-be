@@ -14,6 +14,8 @@ public interface PostMapper {
 
     PostEntity[] getPopularPostsWithPagination(int offset, int limit);
 
+    PostEntity[] getSearchPostsWithPagination(int offset, int limit, String value);
+
     PostEntity[] getFollowingPosts(Long user_id);
 
     PostEntity[] getFollowingPostsWithPagination(Long user_id, int offset, int limit);
@@ -25,5 +27,7 @@ public interface PostMapper {
     boolean deletePostByPostId(Long id);
 
     int updatePost(PostEntity post);
+
+    int totalPostNumberBySearch(String value);
 
 }
