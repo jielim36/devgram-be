@@ -96,4 +96,16 @@ class DevgramApplicationTests {
         System.out.println(searchPostsWithPagination.getTotal());
     }
 
+    @Test
+    void getPost() {
+        Long postId = 15L;
+        PostDTO postById = postService.getPostById(postId, userId);
+        System.out.println(postById);
+    }
+
+    @Test
+    void initUserData() {
+        authService.initUserData(1023L);
+    }
+
 }

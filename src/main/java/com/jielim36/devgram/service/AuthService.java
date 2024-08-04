@@ -1,5 +1,8 @@
 package com.jielim36.devgram.service;
 
+import com.jielim36.devgram.DTO.request.AuthenticationRequest;
+import com.jielim36.devgram.DTO.request.RegisterRequest;
+import com.jielim36.devgram.DTO.response.AuthenticationResponse;
 import com.jielim36.devgram.entity.PrivacySettingsEntity;
 import com.jielim36.devgram.entity.UserInfoEntity;
 import com.jielim36.devgram.enums.OAuthProviderEnum;
@@ -7,6 +10,10 @@ import com.jielim36.devgram.enums.PostVisibilityDurationEnum;
 import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.AuthMapper;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +24,25 @@ public class AuthService {
     private final AuthMapper authMapper;
     private final UserInfoService userInfoService;
     private final PrivacySettingsService privacySettingsService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     public AuthService(AuthMapper authMapper,
                        UserInfoService userInfoService,
-                       PrivacySettingsService privacySettingsService) {
+                       PrivacySettingsService privacySettingsService,
+                       UserService userService,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService,
+                       @Lazy AuthenticationManager authenticationManager) {
         this.authMapper = authMapper;
         this.userInfoService = userInfoService;
         this.privacySettingsService = privacySettingsService;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     public boolean checkUserExists(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
@@ -45,7 +64,46 @@ public class AuthService {
         return authMapper.selectUserByGoogleId(google_id) != null;
     }
 
-    @Transactional
+
+    // For local platform register
+    public AuthenticationResponse register(RegisterRequest registerRequest) {
+        if(registerRequest.getUsername() == null || registerRequest.getEmail() == null || registerRequest.getPassword() == null) {
+            throw new RuntimeException("Invalid request");
+        }
+
+        if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
+            throw new RuntimeException("Password and confirm password do not match");
+        }
+
+        userService.findUserByEmail(registerRequest.getEmail())
+                .ifPresent(user -> {
+                    throw new RuntimeException("Email already exists");
+                });
+
+        String username = registerRequest.getUsername();
+        String email = registerRequest.getEmail();
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
+        UserEntity user = new UserEntity(username, email, encodedPassword);
+        authMapper.insertLocalUser(user);
+        initUserData(user.getId());
+
+        String jwtToken = jwtService.generateToken(user);
+        return new AuthenticationResponse(jwtToken);
+    }
+
+    // For local platform login
+    public AuthenticationResponse login(AuthenticationRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        UserEntity user = userService.findUserByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String jwtToken = jwtService.generateToken(user);
+        return new AuthenticationResponse(jwtToken);
+    }
+
+    // For third-party register
     public void register(String providerId, OAuth2AuthenticatedPrincipal userPrincipal) {
         if (OAuthProviderEnum.GITHUB.getProviderName().equals(providerId)) {
             register_github(userPrincipal);
@@ -54,14 +112,12 @@ public class AuthService {
         }
     }
 
-    @Transactional
     public void register_github(OAuth2AuthenticatedPrincipal principal) {
         UserEntity user = OAuthUserConvert.convertGithubUser(principal);
         authMapper.insertGithubUser(user);
         initUserData(user.getId());
     }
 
-    @Transactional
     public void register_google(OAuth2AuthenticatedPrincipal principal) {
         UserEntity user = OAuthUserConvert.convertGoogleUser(principal);
         authMapper.insertGoogleUser(user);
@@ -88,9 +144,8 @@ public class AuthService {
     }
 
     public void initUserData(Long userId) {
-        try{
             // create user info data
-            UserInfoEntity userInfo = new UserInfoEntity( userId, null, null, null, null);
+            UserInfoEntity userInfo = new UserInfoEntity( userId, null,"Other" , null, null);
             boolean isAddedUserInfo = userInfoService.addUserInfo(userInfo);
             if(!isAddedUserInfo) {
                 throw new RuntimeException("Failed to initialize user info");
@@ -113,11 +168,6 @@ public class AuthService {
             if (affectedRows == 0) {
                 throw new RuntimeException("Failed to initialize privacy settings");
             }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize user data");
-        }
-
     }
 
 }

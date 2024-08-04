@@ -11,14 +11,19 @@
         SELECT * FROM user WHERE google_id = #{googleId}
     </select>
 
-    <insert id="insertGithubUser" parameterType="com.jielim36.devgram.entity.UserEntity">
+    <insert id="insertGithubUser" parameterType="com.jielim36.devgram.entity.UserEntity" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `user` (github_id, username, email, avatar_url, created_at, updated_at)
         VALUES (#{github_id}, #{username}, #{email}, #{avatar_url}, #{created_at}, #{updated_at})
     </insert>
 
-    <insert id="insertGoogleUser" parameterType="com.jielim36.devgram.entity.UserEntity">
+    <insert id="insertGoogleUser" parameterType="com.jielim36.devgram.entity.UserEntity" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `user` (google_id, username, email, avatar_url, created_at, updated_at)
         VALUES (#{google_id}, #{username}, #{email}, #{avatar_url}, #{created_at}, #{updated_at})
+    </insert>
+
+    <insert id="insertLocalUser" parameterType="com.jielim36.devgram.entity.UserEntity" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO `user` (username, email, password, created_at, updated_at)
+        VALUES (#{username}, #{email}, #{password}, #{created_at}, #{updated_at})
     </insert>
 
     <select id="getUserIdByGithubId" resultType="Long">

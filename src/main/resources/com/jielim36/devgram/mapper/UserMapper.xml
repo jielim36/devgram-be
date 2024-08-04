@@ -71,4 +71,14 @@
         AND u.is_active = 1
     </select>
 
+    <select id="findUserByEmail" resultType="com.jielim36.devgram.entity.UserEntity">
+        SELECT * FROM user WHERE email = #{email}
+    </select>
+
+    <update id="uploadAvatarByUserId" parameterType="com.jielim36.devgram.entity.UserEntity">
+        UPDATE user
+        SET avatar_url = #{avatar_url}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

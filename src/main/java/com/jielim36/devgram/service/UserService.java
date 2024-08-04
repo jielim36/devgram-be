@@ -6,19 +6,27 @@ import com.jielim36.devgram.enums.OAuthProviderEnum;
 import com.jielim36.devgram.utils.OAuthUserConvert;
 import com.jielim36.devgram.entity.UserEntity;
 import com.jielim36.devgram.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserMapper userMapper;
     private final UserInfoService userInfoService;
+    private final JwtService jwtService;
+    private final AmazonClient amazonClient;
     private final Integer LIMIT = 10;
 
-    public UserService(UserMapper userMapper, UserInfoService userInfoService) {
+    public UserService(UserMapper userMapper, UserInfoService userInfoService, JwtService jwtService, AmazonClient amazonClient) {
         this.userMapper = userMapper;
         this.userInfoService = userInfoService;
+        this.jwtService = jwtService;
+        this.amazonClient = amazonClient;
     }
 
     public UserEntity selectUserById(Long id) {
@@ -65,6 +73,23 @@ public class UserService {
         result.setPage(page);
 
         return result;
+    }
+
+    public Optional<UserEntity> findUserByEmail(String email) {
+        return Optional.ofNullable(userMapper.findUserByEmail(email));
+    }
+
+    public UserEntity getUserByRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        String email = jwtService.extractUsername(token);
+        return userMapper.findUserByEmail(email);
+    }
+
+    public boolean updateAvatar(Long user_id, MultipartFile avatarImg) {
+        String fileName = "avatar_" + user_id + ".png";
+        String image_url = amazonClient.uploadFile(avatarImg, fileName);
+        int affectedRows = userMapper.uploadAvatarByUserId(user_id, image_url);
+        return affectedRows > 0;
     }
 
 }

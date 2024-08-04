@@ -1,12 +1,16 @@
 package com.jielim36.devgram.entity;
 
 import com.jielim36.devgram.DTO.UserDTO;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.lang.String;
+import java.util.Collection;
+import java.util.List;
 
 @Repository
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     private Long id;
     private String username;
@@ -18,6 +22,15 @@ public class UserEntity {
     private boolean is_active;
     private String created_at;
     private String updated_at;
+
+    public UserEntity() {
+    }
+
+    public UserEntity(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -47,6 +60,30 @@ public class UserEntity {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -66,6 +103,7 @@ public class UserEntity {
     public void setAvatar_url(String avatar_url) {
         this.avatar_url = avatar_url;
     }
+
 
     public String getPassword() {
         return password;

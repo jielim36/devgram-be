@@ -21,4 +21,8 @@ public interface UserMapper {
 
     int getTotalUserNumberBySearch(String value);
 
+    UserEntity findUserByEmail(String email);
+
+    int uploadAvatarByUserId(Long id, String avatar_url);
+
 }

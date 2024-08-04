@@ -1,7 +1,10 @@
 package com.jielim36.devgram.controller;
 
+import com.jielim36.devgram.DTO.request.AuthenticationRequest;
+import com.jielim36.devgram.DTO.request.RegisterRequest;
 import com.jielim36.devgram.common.ResultResponse;
 import com.jielim36.devgram.service.AuthService;
+import com.nimbusds.openid.connect.sdk.AuthenticationResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -12,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -40,6 +44,16 @@ public class AuthController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         return ResultResponse.success(true);
+    }
+
+    @PostMapping("/register")
+    public ResultResponse register(@RequestBody RegisterRequest registerRequest) {
+        return ResultResponse.success(authService.register(registerRequest));
+    }
+
+    @PostMapping("/login")
+    public ResultResponse login(@RequestBody AuthenticationRequest loginRequest) {
+        return ResultResponse.success(authService.login(loginRequest));
     }
 
 }
