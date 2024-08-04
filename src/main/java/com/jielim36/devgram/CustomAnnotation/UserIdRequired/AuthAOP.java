@@ -30,7 +30,6 @@ public class AuthAOP {
 
     @Before("@annotation(UserIdRequired) || @within(UserIdRequired)")
     public void getUserId(JoinPoint joinPoint) throws Throwable {
-        System.out.println("AOP");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        if(authentication == null || !authentication.isAuthenticated()) {
 //            throw new UnauthorizedException(ResultCode.UNAUTHORIZED.getResultMsg());
